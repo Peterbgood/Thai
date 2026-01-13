@@ -3,206 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thailand Adventure 2026</title>
+    <title>Thailand March 2026</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #004e64;
-            --accent: #ffb703;
-            --bg: #f8f9fa;
-            --card-bg: #ffffff;
-            --text: #333;
+            --primary: #023047;
+            --secondary: #219ebc;
+            --accent: #fb8500;
+            --bg: #f1f5f9;
+            --white: #ffffff;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
+            color: #334155;
             margin: 0;
-            line-height: 1.6;
+            padding-bottom: 50px;
         }
 
-        header {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                        url('https://images.unsplash.com/photo-1528181304800-2f140819ad51?auto=format&fit=crop&w=1350&q=80');
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1600&q=80');
             background-size: cover;
             background-position: center;
-            height: 40vh;
+            height: 450px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             color: white;
-            text-align: center;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
+
+        .hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: 4px; }
+        .hero p { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
 
         .container {
-            max-width: 900px;
-            margin: -50px auto 50px auto;
-            padding: 20px;
+            max-width: 850px;
+            margin: -60px auto 0;
+            padding: 0 20px;
         }
 
-        .summary-cards {
+        .quick-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
             margin-bottom: 30px;
         }
 
-        .card {
-            background: var(--card-bg);
+        .stat-card {
+            background: var(--white);
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .main-list {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .list-item {
+            display: grid;
+            grid-template-columns: 120px 1fr 100px;
+            align-items: center;
+            padding: 25px;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.3s;
+        }
+
+        .list-item:hover { background: #f8fafc; }
+
+        .date-box {
+            text-align: center;
+            border-right: 2px solid #f1f5f9;
+        }
+
+        .date-box .day { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: block; }
+        .date-box .month { font-size: 0.8rem; text-transform: uppercase; color: #64748b; }
+
+        .activity-details { padding: 0 25px; }
+        .activity-details strong { font-size: 1.1rem; color: var(--primary); }
+        .activity-details p { margin: 5px 0 0; color: #64748b; font-size: 0.95rem; }
+
+        .price-tag {
+            background: #dcfce7;
+            color: #166534;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
             text-align: center;
         }
 
-        .itinerary {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
+        .free-tag { background: #fee2e2; color: #991b1b; }
 
-        .day-row {
-            display: flex;
-            border-bottom: 1px solid #eee;
-            padding: 20px 0;
-            transition: transform 0.2s;
-        }
-
-        .day-row:hover {
-            transform: scale(1.02);
-        }
-
-        .date {
-            min-width: 100px;
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-
-        .activity {
-            flex-grow: 1;
-            padding-left: 20px;
-        }
-
-        .cost {
-            font-weight: bold;
-            color: #2a9d8f;
-            background: #e9f5f3;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        .highlight {
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            background: var(--primary);
-            color: white;
+        @media (max-width: 600px) {
+            .list-item { grid-template-columns: 80px 1fr; }
+            .price-tag { grid-column: 2; width: fit-content; margin-top: 10px; }
+            .hero h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div>
-        <h1>THAILAND 2026</h1>
-        <p>Phuket & Beyond | Jan 5th — 16th</p>
-    </div>
-</header>
+<div class="hero">
+    <h1>PHUKET</h1>
+    <p>MARCH 5 — MARCH 16, 2026</p>
+</div>
 
 <div class="container">
-    <div class="summary-cards">
-        <div class="card">
-            <i class="fas fa-plane-arrival fa-2x" style="color: var(--primary)"></i>
-            <h3>Doha Transit</h3>
-            <p>Arriving on the 6th</p>
+    <div class="quick-stats">
+        <div class="stat-card">
+            <i class="fas fa-plane"></i>
+            <h4>Doha</h4>
+            <small>Transit Hub</small>
         </div>
-        <div class="card">
-            <i class="fas fa-car fa-2x" style="color: var(--primary)"></i>
-            <h3>Transport</h3>
-            <p>Car Rental Secured</p>
+        <div class="stat-card" style="border-top-color: var(--accent);">
+            <i class="fas fa-car"></i>
+            <h4>Rental</h4>
+            <small>Ready for Pickup</small>
         </div>
-        <div class="card">
-            <i class="fas fa-hotel fa-2x" style="color: var(--primary)"></i>
-            <h3>Stay</h3>
-            <p>Doubletree (Paid)</p>
+        <div class="stat-card">
+            <i class="fas fa-bed"></i>
+            <h4>DoubleTree</h4>
+            <small>Booking Confirmed</small>
         </div>
     </div>
 
-    <div class="itinerary">
-        <div class="day-row">
-            <div class="date">Jan 5-6</div>
-            <div class="activity">
-                <strong>Departure & Transit</strong>
-                <p>Arrive in Doha. Hotel and Car Rental Pickup.</p>
+    <div class="main-list">
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">05-06</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Departure & Doha Arrival</strong>
+                <p>Initial Hotel & Car Rental setup in Qatar transit.</p>
             </div>
         </div>
 
-        <div class="day-row">
-            <div class="date">7th</div>
-            <div class="activity"><strong>Arrival in Thailand</strong></div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">07</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Touchdown: Thailand</strong>
+                <p>Arrive and settle into the island vibe.</p>
+            </div>
         </div>
 
-        <div class="day-row">
-            <div class="date">8th</div>
-            <div class="activity"><strong>Beach / Pool Day</strong> <span class="highlight">Relaxation Mode</span></div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">08</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Beach & Pool Day</strong>
+                <p>Acclimatize and relax at the resort.</p>
+            </div>
         </div>
 
-        <div class="day-row">
-            <div class="date">9th</div>
-            <div class="activity"><strong>Raya and Coral Island</strong></div>
-            <div class="cost">฿ 4,800</div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">09</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Raya & Coral Island</strong>
+                <p>Full day boat excursion.</p>
+            </div>
+            <div class="price-tag">฿ 4,800</div>
         </div>
 
-        <div class="day-row">
-            <div class="date">10th</div>
-            <div class="activity"><strong>Ya Nui or Surin Beach</strong></div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">10</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Ya Nui or Surin Beach</strong>
+                <p>Exploring the local coastlines.</p>
+            </div>
         </div>
 
-        <div class="day-row">
-            <div class="date">11th</div>
-            <div class="activity"><strong>Phi Phi Island Trip</strong></div>
-            <div class="cost">฿ 5,200</div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">11</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Phi Phi Island Trip</strong>
+                <p>The iconic Maya Bay and snorkeling.</p>
+            </div>
+            <div class="price-tag">฿ 5,200</div>
         </div>
 
-        <div class="day-row">
-            <div class="date">12th</div>
-            <div class="activity"><strong>Freedom Beach</strong></div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">12</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Freedom Beach</strong>
+                <p>Hidden gem visit.</p>
+            </div>
         </div>
 
-        <div class="day-row">
-            <div class="date">13th</div>
-            <div class="activity"><strong>Elephant Sanctuary</strong></div>
-            <div class="cost">฿ 10,000</div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">13</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Elephant Sanctuary</strong>
+                <p>Ethical interaction and feeding.</p>
+            </div>
+            <div class="price-tag">฿ 10,000</div>
         </div>
 
-        <div class="day-row">
-            <div class="date">14th</div>
-            <div class="activity"><strong class="highlight">FREE DAY!!!!</strong></div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">14</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>FREE DAY!!!!</strong>
+                <p>Open schedule for last-minute exploring.</p>
+            </div>
+            <div class="price-tag free-tag">OPEN</div>
         </div>
 
-        <div class="day-row">
-            <div class="date">15th</div>
-            <div class="activity"><strong>Doubletree Stay</strong></div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">15</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>DoubleTree Paid</strong>
+                <p>Final night luxury stay.</p>
+            </div>
         </div>
 
-        <div class="day-row">
-            <div class="date">16th</div>
-            <div class="activity"><strong>Return Journey</strong> (Return Car Rental)</div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">16</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>The Return</strong>
+                <p>Car rental return and departure.</p>
+            </div>
         </div>
+
     </div>
 </div>
-
-<footer>
-    <p>Have an amazing trip! 🌴🥥</p>
-</footer>
 
 </body>
 </html>
