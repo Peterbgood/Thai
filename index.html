@@ -13,7 +13,6 @@
             --bg: #f1f5f9;
             --white: #ffffff;
         }
-
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: var(--bg);
@@ -21,10 +20,9 @@
             margin: 0;
             padding-bottom: 50px;
         }
-
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                        url('https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1600&q=80');
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                        url('https://media.istockphoto.com/id/1462519363/photo/aerial-view-of-the-famous-maya-beach-phi-phi-islands.jpg?s=1600');
             background-size: cover;
             background-position: center;
             height: 450px;
@@ -35,23 +33,39 @@
             color: white;
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-
         .hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: 4px; }
         .hero p { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
-
+        .countdown {
+            margin-top: 30px;
+            background: rgba(0,0,0,0.5);
+            padding: 20px 40px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .countdown h3 {
+            margin: 0 0 15px;
+            font-size: 1.6rem;
+        }
+        .countdown-timer {
+            font-size: 2.2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .countdown-timer span {
+            display: inline-block;
+            min-width: 80px;
+        }
         .container {
             max-width: 850px;
             margin: -60px auto 0;
             padding: 0 20px;
         }
-
         .quick-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-bottom: 30px;
         }
-
         .stat-card {
             background: var(--white);
             padding: 20px;
@@ -60,14 +74,12 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             border-top: 4px solid var(--secondary);
         }
-
         .main-list {
             background: var(--white);
             border-radius: 16px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             overflow: hidden;
         }
-
         .list-item {
             display: grid;
             grid-template-columns: 120px 1fr 100px;
@@ -76,21 +88,16 @@
             border-bottom: 1px solid #f1f5f9;
             transition: background 0.3s;
         }
-
         .list-item:hover { background: #f8fafc; }
-
         .date-box {
             text-align: center;
             border-right: 2px solid #f1f5f9;
         }
-
         .date-box .day { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: block; }
         .date-box .month { font-size: 0.8rem; text-transform: uppercase; color: #64748b; }
-
         .activity-details { padding: 0 25px; }
         .activity-details strong { font-size: 1.1rem; color: var(--primary); }
         .activity-details p { margin: 5px 0 0; color: #64748b; font-size: 0.95rem; }
-
         .price-tag {
             background: #dcfce7;
             color: #166534;
@@ -100,23 +107,31 @@
             font-weight: bold;
             text-align: center;
         }
-
         .free-tag { background: #fee2e2; color: #991b1b; }
-
         @media (max-width: 600px) {
             .list-item { grid-template-columns: 80px 1fr; }
             .price-tag { grid-column: 2; width: fit-content; margin-top: 10px; }
             .hero h1 { font-size: 2.5rem; }
+            .countdown { padding: 15px 25px; }
+            .countdown-timer { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
-
 <div class="hero">
     <h1>PHUKET</h1>
     <p>MARCH 5 — MARCH 16, 2026</p>
+    
+    <div class="countdown">
+        <h3>Countdown to Departure</h3>
+        <div class="countdown-timer" id="countdown">
+            <span id="days">00</span>d 
+            <span id="hours">00</span>h 
+            <span id="minutes">00</span>m 
+            <span id="seconds">00</span>s
+        </div>
+    </div>
 </div>
-
 <div class="container">
     <div class="quick-stats">
         <div class="stat-card">
@@ -135,7 +150,6 @@
             <small>Booking Confirmed</small>
         </div>
     </div>
-
     <div class="main-list">
         <div class="list-item">
             <div class="date-box">
@@ -147,7 +161,6 @@
                 <p>Initial Hotel & Car Rental setup in Qatar transit.</p>
             </div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">07</span>
@@ -158,7 +171,6 @@
                 <p>Arrive and settle into the island vibe.</p>
             </div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">08</span>
@@ -169,7 +181,6 @@
                 <p>Acclimatize and relax at the resort.</p>
             </div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">09</span>
@@ -181,7 +192,6 @@
             </div>
             <div class="price-tag">฿ 4,800</div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">10</span>
@@ -192,7 +202,6 @@
                 <p>Exploring the local coastlines.</p>
             </div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">11</span>
@@ -204,7 +213,6 @@
             </div>
             <div class="price-tag">฿ 5,200</div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">12</span>
@@ -215,7 +223,6 @@
                 <p>Hidden gem visit.</p>
             </div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">13</span>
@@ -227,7 +234,6 @@
             </div>
             <div class="price-tag">฿ 10,000</div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">14</span>
@@ -239,7 +245,6 @@
             </div>
             <div class="price-tag free-tag">OPEN</div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">15</span>
@@ -250,7 +255,6 @@
                 <p>Final night luxury stay.</p>
             </div>
         </div>
-
         <div class="list-item">
             <div class="date-box">
                 <span class="day">16</span>
@@ -261,9 +265,36 @@
                 <p>Car rental return and departure.</p>
             </div>
         </div>
-
     </div>
 </div>
 
+<script>
+    // Countdown to March 5, 2026, 00:00 (Thailand time roughly, but using UTC for simplicity)
+    const targetDate = new Date("2026-03-05T00:00:00").getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            document.getElementById("countdown").innerHTML = "Trip Started!";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").textContent = days.toString().padStart(2, '0');
+        document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
+        document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
+        document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
+    }
+
+    // Update every second
+    setInterval(updateCountdown, 1000);
+    updateCountdown(); // Initial call
+</script>
 </body>
 </html>
