@@ -36,24 +36,26 @@
         .hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: 4px; }
         .hero p { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
         .countdown {
-            margin-top: 30px;
+            margin-top: 25px;
             background: rgba(0,0,0,0.5);
-            padding: 20px 40px;
-            border-radius: 12px;
+            padding: 12px 25px;
+            border-radius: 10px;
             text-align: center;
         }
         .countdown h3 {
-            margin: 0 0 15px;
-            font-size: 1.6rem;
+            margin: 0 0 8px;
+            font-size: 1.3rem;
         }
         .countdown-timer {
-            font-size: 2.2rem;
+            font-size: 1.4rem;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            white-space: nowrap;
         }
         .countdown-timer span {
             display: inline-block;
-            min-width: 80px;
+            min-width: 50px;
+            margin: 0 4px;
         }
         .container {
             max-width: 850px;
@@ -112,8 +114,19 @@
             .list-item { grid-template-columns: 80px 1fr; }
             .price-tag { grid-column: 2; width: fit-content; margin-top: 10px; }
             .hero h1 { font-size: 2.5rem; }
-            .countdown { padding: 15px 25px; }
-            .countdown-timer { font-size: 1.8rem; }
+            .countdown {
+                padding: 10px 18px;
+                margin-top: 20px;
+            }
+            .countdown h3 { font-size: 1.1rem; margin-bottom: 6px; }
+            .countdown-timer {
+                font-size: 1.1rem;
+                letter-spacing: 0.5px;
+            }
+            .countdown-timer span {
+                min-width: 40px;
+                margin: 0 3px;
+            }
         }
     </style>
 </head>
@@ -161,7 +174,47 @@
                 <p>Initial Hotel & Car Rental setup in Qatar transit.</p>
             </div>
         </div>
-        <!-- ... (rest of your itinerary items unchanged) ... -->
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">07</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Touchdown: Thailand</strong>
+                <p>Arrive and settle into the island vibe.</p>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">08</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Beach & Pool Day</strong>
+                <p>Acclimatize and relax at the resort.</p>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">09</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Raya & Coral Island</strong>
+                <p>Full day boat excursion.</p>
+            </div>
+            <div class="price-tag">฿ 4,800</div>
+        </div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">10</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Ya Nui or Surin Beach</strong>
+                <p>Exploring the local coastlines.</p>
+            </div>
+        </div>
         <div class="list-item">
             <div class="date-box">
                 <span class="day">11</span>
@@ -173,12 +226,62 @@
             </div>
             <div class="price-tag">฿ 5,200</div>
         </div>
-        <!-- ... remaining items ... -->
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">12</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Freedom Beach</strong>
+                <p>Hidden gem visit.</p>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">13</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>Elephant Sanctuary</strong>
+                <p>Ethical interaction and feeding.</p>
+            </div>
+            <div class="price-tag">฿ 10,000</div>
+        </div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">14</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>FREE DAY!!!!</strong>
+                <p>Open schedule for last-minute exploring.</p>
+            </div>
+            <div class="price-tag free-tag">OPEN</div>
+        </div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">15</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>DoubleTree Paid</strong>
+                <p>Final night luxury stay.</p>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="date-box">
+                <span class="day">16</span>
+                <span class="month">March</span>
+            </div>
+            <div class="activity-details">
+                <strong>The Return</strong>
+                <p>Car rental return and departure.</p>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    // Countdown script remains the same
     const targetDate = new Date("2026-03-05T00:00:00").getTime();
 
     function updateCountdown() {
