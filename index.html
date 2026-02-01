@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
             --bg: #f1f5f9;
             --white: #ffffff;
         }
+
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: var(--bg);
@@ -20,9 +22,10 @@
             margin: 0;
             padding-bottom: 50px;
         }
+
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                        url('https://static.vecteezy.com/system/resources/previews/008/316/012/non_2x/aerial-view-of-phi-phi-island-with-maya-bay-and-phi-leh-lake-krabi-province-top-view-of-a-rocky-tropical-island-isolated-with-turquoise-water-and-white-beach-thailand-free-photo.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                url('https://static.vecteezy.com/system/resources/previews/008/316/012/non_2x/aerial-view-of-phi-phi-island-with-maya-bay-and-phi-leh-lake-krabi-province-top-view-of-a-rocky-tropical-island-isolated-with-turquoise-water-and-white-beach-thailand-free-photo.jpg');
             background-size: cover;
             background-position: center;
             height: 450px;
@@ -31,57 +34,76 @@
             justify-content: center;
             align-items: center;
             color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
-        .hero h1 { font-size: 3.5rem; margin: 0; letter-spacing: 4px; }
-        .hero p { font-size: 1.2rem; opacity: 0.9; margin-top: 10px; }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            letter-spacing: 4px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
         .countdown {
             margin-top: 25px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             padding: 12px 25px;
             border-radius: 10px;
             text-align: center;
         }
+
         .countdown h3 {
             margin: 0 0 8px;
             font-size: 1.3rem;
         }
+
         .countdown-timer {
             font-size: 1.4rem;
             font-weight: bold;
             letter-spacing: 1px;
             white-space: nowrap;
         }
+
         .countdown-timer span {
             display: inline-block;
             min-width: 50px;
             margin: 0 4px;
         }
+
         .container {
             max-width: 850px;
             margin: -60px auto 0;
             padding: 0 20px;
         }
+
         .quick-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-bottom: 30px;
         }
+
         .stat-card {
             background: var(--white);
             padding: 20px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             border-top: 4px solid var(--secondary);
         }
+
         .main-list {
             background: var(--white);
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             overflow: hidden;
         }
+
         .list-item {
             display: grid;
             grid-template-columns: 120px 1fr 100px;
@@ -90,16 +112,44 @@
             border-bottom: 1px solid #f1f5f9;
             transition: background 0.3s;
         }
-        .list-item:hover { background: #f8fafc; }
+
+        .list-item:hover {
+            background: #f8fafc;
+        }
+
         .date-box {
             text-align: center;
             border-right: 2px solid #f1f5f9;
         }
-        .date-box .day { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: block; }
-        .date-box .month { font-size: 0.8rem; text-transform: uppercase; color: #64748b; }
-        .activity-details { padding: 0 25px; }
-        .activity-details strong { font-size: 1.1rem; color: var(--primary); }
-        .activity-details p { margin: 5px 0 0; color: #64748b; font-size: 0.95rem; }
+
+        .date-box .day {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .date-box .month {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+
+        .activity-details {
+            padding: 0 25px;
+        }
+
+        .activity-details strong {
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .activity-details p {
+            margin: 5px 0 0;
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
         .price-tag {
             background: #dcfce7;
             color: #166534;
@@ -109,178 +159,245 @@
             font-weight: bold;
             text-align: center;
         }
-        .free-tag { background: #fee2e2; color: #991b1b; }
+
+        .free-tag {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
         @media (max-width: 600px) {
-            .list-item { grid-template-columns: 80px 1fr; }
-            .price-tag { grid-column: 2; width: fit-content; margin-top: 10px; }
-            .hero h1 { font-size: 2.5rem; }
-            .countdown { padding: 10px 18px; margin-top: 20px; }
-            .countdown h3 { font-size: 1.1rem; margin-bottom: 6px; }
-            .countdown-timer { font-size: 1.1rem; letter-spacing: 0.5px; }
-            .countdown-timer span { min-width: 40px; margin: 0 3px; }
+            .list-item {
+                grid-template-columns: 80px 1fr;
+            }
+
+            .price-tag {
+                grid-column: 2;
+                width: fit-content;
+                margin-top: 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .countdown {
+                padding: 10px 18px;
+                margin-top: 20px;
+            }
+
+            .countdown h3 {
+                font-size: 1.1rem;
+                margin-bottom: 6px;
+            }
+
+            .countdown-timer {
+                font-size: 1.1rem;
+                letter-spacing: 0.5px;
+            }
+
+            .countdown-timer span {
+                min-width: 40px;
+                margin: 0 3px;
+            }
         }
     </style>
 </head>
+
 <body>
-<div class="hero">
-    <h1>PHUKET</h1>
-    <p>MARCH 5 — MARCH 16, 2026</p>
-    
-    <div class="countdown">
-        <h3>Countdown to Departure</h3>
-        <div class="countdown-timer" id="countdown">
-            <span id="days">00</span>d 
-            <span id="hours">00</span>h 
-            <span id="minutes">00</span>m 
-            <span id="seconds">00</span>s
-        </div>
-    </div>
-</div>
-<div class="container">
-    
-    <div class="main-list">
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">05-06</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>Departure & Doha Arrival</strong>
-                <p>Oryx Hotel Doha</p>
-            </div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">07</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>Touchdown: Thailand</strong>
-                <p>Arrive and settle into the island vibe.</p>
-            </div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">08</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>Beach & Pool Day</strong>
-                <p>Acclimatize and relax at the resort.</p>
-            </div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">09</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>Raya & Coral Island</strong>
-                <p>Full day boat excursion.</p>
-            </div>
-            <div class="price-tag">฿ 4,800</div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">10</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>Ya Nui or Surin Beach</strong>
-                <p>Exploring the local coastlines.</p>
-            </div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">11</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>Phi Phi Island Trip</strong>
-                <p>The iconic Maya Bay and snorkeling.</p>
-            </div>
-            <div class="price-tag">฿ 5,200</div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">12</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>Freedom Beach</strong>
-                <p>Hidden gem visit.</p>
-            </div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">13</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>Elephant Sanctuary</strong>
-                <p>Ethical interaction and feeding.</p>
-            </div>
-            <div class="price-tag">฿ 10,000</div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">14</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>FREE DAY!!!!</strong>
-                <p>Open schedule for last-minute exploring.</p>
-            </div>
-            <div class="price-tag free-tag">OPEN</div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">15</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>DoubleTree Paid</strong>
-                <p>Final night luxury stay.</p>
-            </div>
-        </div>
-        <div class="list-item">
-            <div class="date-box">
-                <span class="day">16</span>
-                <span class="month">March</span>
-            </div>
-            <div class="activity-details">
-                <strong>The Return</strong>
-                <p>Oryx Hotel Doha</p>
+    <div class="hero">
+        <h1>PHUKET</h1>
+        <p>MARCH 5 — MARCH 16, 2026</p>
+
+        <div class="countdown">
+            <h3>Countdown to Departure</h3>
+            <div class="countdown-timer" id="countdown">
+                <span id="days">00</span>d
+                <span id="hours">00</span>h
+                <span id="minutes">00</span>m
+                <span id="seconds">00</span>s
             </div>
         </div>
     </div>
-</div>
+    <div class="container">
 
-<script>
-    const targetDate = new Date("2026-03-05T00:00:00").getTime();
+        <div class="main-list">
 
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">05</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <Strong>Depart Knoxville</Strong>
+                    <p>Pick up rental car (Budget) 10am</p>
+                    <p>Leave knoxville 1pm latest</p>
+                    <p>Return rental car 5pm</p>
+                </div>
+            </div>
 
-        if (distance < 0) {
-            document.getElementById("countdown").innerHTML = "Trip Started!";
-            return;
+
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">06</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Doha Arrival 3:25pm</strong>
+                    <p>Oryx Hotel Doha</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">07</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Touchdown: Thailand 6:55pm</strong>
+                    <p>Arrive and settle into the island vibe.</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">08</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Beach & Pool Day</strong>
+                    <p>Acclimatize and relax at the resort.</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">09</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Raya & Coral Island</strong>
+                    <p>Full day boat excursion.</p>
+                </div>
+                <div class="price-tag">฿ 4,800</div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">10</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Ya Nui or Surin Beach</strong>
+                    <p>Exploring the local coastlines.</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">11</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Phi Phi Island Trip</strong>
+                    <p>The iconic Maya Bay and snorkeling.</p>
+                </div>
+                <div class="price-tag">฿ 5,200</div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">12</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Freedom Beach</strong>
+                    <p>Hidden gem visit.</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">13</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Elephant Sanctuary</strong>
+                    <p>Ethical interaction and feeding.</p>
+                </div>
+                <div class="price-tag">฿ 10,000</div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">14</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>FREE DAY!!!!</strong>
+                    <p>Open schedule for last-minute exploring.</p>
+                </div>
+                <div class="price-tag free-tag">OPEN</div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">15</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Leave Phuket 8:20am.</strong>
+                
+
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="date-box">
+                    <span class="day">16</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Arrive Oryx Hotel Doha 11am.</strong>
+                   
+
+                </div>
+            </div>
+
+<div class="list-item">
+                <div class="date-box">
+                    <span class="day">17</span>
+                    <span class="month">March</span>
+                </div>
+                <div class="activity-details">
+                    <strong>Leave Doho 8:10am.</strong>
+<p>Arrive in Atlanta 4:15pm</p>
+<p>Collect rental car (National)</p>
+
+                    
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        const targetDate = new Date("2026-03-05T00:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "Trip Started!";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = days.toString().padStart(2, '0');
+            document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
         }
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById("days").textContent = days.toString().padStart(2, '0');
-        document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
-        document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
-        document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
-    }
-
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-</script>
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
 </body>
+
 </html>
