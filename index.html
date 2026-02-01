@@ -4,15 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thailand March 2026</title>
+    <title>Thailand Trip 2026</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --primary: #023047;
             --secondary: #219ebc;
             --accent: #fb8500;
-            --bg: #f1f5f9;
+            --bg: #f8fafc;
             --white: #ffffff;
+            --text-light: #64748b;
         }
 
         body {
@@ -23,141 +24,184 @@
             padding-bottom: 50px;
         }
 
+        /* HERO SECTION */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+            background: linear-gradient(rgba(2, 48, 71, 0.6), rgba(2, 48, 71, 0.4)),
                 url('https://static.vecteezy.com/system/resources/previews/008/316/012/non_2x/aerial-view-of-phi-phi-island-with-maya-bay-and-phi-leh-lake-krabi-province-top-view-of-a-rocky-tropical-island-isolated-with-turquoise-water-and-white-beach-thailand-free-photo.jpg');
             background-size: cover;
             background-position: center;
-            height: 450px;
+            height: 500px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 20px;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin: 0;
-            letter-spacing: 4px;
+            letter-spacing: 6px;
+            font-weight: 800;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 1.3rem;
+            font-weight: 300;
             margin-top: 10px;
+            letter-spacing: 1px;
         }
 
+        /* COUNTDOWN */
         .countdown {
-            margin-top: 25px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 12px 25px;
-            border-radius: 10px;
-            text-align: center;
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         .countdown h3 {
-            margin: 0 0 8px;
-            font-size: 1.3rem;
+            margin: 0 0 5px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
         }
 
         .countdown-timer {
-            font-size: 1.4rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            white-space: nowrap;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
         }
 
-        .countdown-timer span {
-            display: inline-block;
-            min-width: 50px;
-            margin: 0 4px;
-        }
-
+        /* CONTAINER */
         .container {
-            max-width: 850px;
-            margin: -60px auto 0;
+            max-width: 800px;
+            margin: -80px auto 0;
             padding: 0 20px;
+            position: relative;
+            z-index: 10;
         }
 
+        /* QUICK STATS (Now using the class you created!) */
         .quick-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .stat-card {
             background: var(--white);
-            padding: 20px;
+            padding: 15px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid var(--secondary);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-bottom: 4px solid var(--accent);
         }
 
+        .stat-card i {
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card div {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* LIST ITEMS */
         .main-list {
             background: var(--white);
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
             overflow: hidden;
         }
 
         .list-item {
             display: grid;
-            grid-template-columns: 120px 1fr 100px;
+            grid-template-columns: 90px 1fr auto;
             align-items: center;
             padding: 25px;
             border-bottom: 1px solid #f1f5f9;
-            transition: background 0.3s;
+            transition: all 0.2s ease;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
         }
 
         .list-item:hover {
             background: #f8fafc;
+            transform: translateX(5px);
         }
 
+        /* DATE BOX */
         .date-box {
             text-align: center;
+            padding-right: 20px;
             border-right: 2px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .date-box .day {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: var(--primary);
-            display: block;
+            line-height: 1;
         }
 
         .date-box .month {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            color: #64748b;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-top: 4px;
         }
 
+        /* DETAILS */
         .activity-details {
             padding: 0 25px;
         }
 
-        .activity-details strong {
-            font-size: 1.1rem;
+        .activity-details h4 {
+            font-size: 1.15rem;
             color: var(--primary);
+            margin: 0 0 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .activity-details h4 i {
+            color: var(--accent);
+            font-size: 0.9rem;
         }
 
         .activity-details p {
-            margin: 5px 0 0;
-            color: #64748b;
+            margin: 4px 0;
+            color: var(--text-light);
             font-size: 0.95rem;
+            line-height: 1.4;
         }
 
+        /* TAGS */
         .price-tag {
             background: #dcfce7;
             color: #166534;
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
         .free-tag {
@@ -165,40 +209,29 @@
             color: #991b1b;
         }
 
+        /* MOBILE */
         @media (max-width: 600px) {
+            .hero h1 { font-size: 2.8rem; }
+            
             .list-item {
-                grid-template-columns: 80px 1fr;
+                grid-template-columns: 70px 1fr;
+                gap: 15px;
+                padding: 20px 15px;
             }
 
             .price-tag {
                 grid-column: 2;
-                width: fit-content;
+                justify-self: start;
                 margin-top: 10px;
+                font-size: 0.8rem;
             }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .countdown {
-                padding: 10px 18px;
-                margin-top: 20px;
-            }
-
-            .countdown h3 {
-                font-size: 1.1rem;
-                margin-bottom: 6px;
-            }
-
-            .countdown-timer {
-                font-size: 1.1rem;
-                letter-spacing: 0.5px;
-            }
-
-            .countdown-timer span {
-                min-width: 40px;
-                margin: 0 3px;
-            }
+            
+            .activity-details { padding: 0 10px; }
+            
+            .activity-details h4 { font-size: 1rem; }
+            
+            .countdown-timer { font-size: 1.2rem; }
+            .countdown-timer span { min-width: auto; }
         }
     </style>
 </head>
@@ -206,19 +239,32 @@
 <body>
     <div class="hero">
         <h1>PHUKET</h1>
-        <p>MARCH 5 — MARCH 16, 2026</p>
+        <p>MARCH 5 — MARCH 17, 2026</p>
 
         <div class="countdown">
-            <h3>Countdown to Departure</h3>
+            <h3>Countdown</h3>
             <div class="countdown-timer" id="countdown">
-                <span id="days">00</span>d
-                <span id="hours">00</span>h
-                <span id="minutes">00</span>m
-                <span id="seconds">00</span>s
+                Loading...
             </div>
         </div>
     </div>
+
     <div class="container">
+        
+        <div class="quick-stats">
+            <div class="stat-card">
+                <i class="fas fa-calendar-alt"></i>
+                <div>12 Days</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-plane"></i>
+                <div>4 Flights</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-umbrella-beach"></i>
+                <div>5 Beaches</div>
+            </div>
+        </div>
 
         <div class="main-list">
 
@@ -228,13 +274,12 @@
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <Strong>Depart Knoxville</Strong>
+                    <h4><i class="fas fa-plane-departure"></i> Depart Knoxville</h4>
                     <p>Pick up rental car (Budget) 10am</p>
-                    <p>Leave knoxville 1pm latest</p>
+                    <p>Leave Knoxville 1pm latest</p>
                     <p>Return rental car 5pm</p>
                 </div>
             </div>
-
 
             <div class="list-item">
                 <div class="date-box">
@@ -242,132 +287,137 @@
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Doha Arrival 3:25pm</strong>
-                    <p>Oryx Hotel Doha</p>
+                    <h4><i class="fas fa-bed"></i> Doha Arrival</h4>
+                    <p>Layover: Oryx Hotel Doha</p>
                 </div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">07</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Touchdown: Thailand 6:55pm</strong>
-                    <p>Arrive and settle into the island vibe.</p>
+                    <h4><i class="fas fa-map-marker-alt"></i> Touchdown Thailand</h4>
+                    <p>Arrive 6:55pm. Settle into the island vibe.</p>
                 </div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">08</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Beach & Pool Day</strong>
+                    <h4><i class="fas fa-swimming-pool"></i> Beach & Pool Day</h4>
                     <p>Acclimatize and relax at the resort.</p>
                 </div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">09</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Raya & Coral Island</strong>
+                    <h4><i class="fas fa-anchor"></i> Raya & Coral Island</h4>
                     <p>Full day boat excursion.</p>
                 </div>
                 <div class="price-tag">฿ 4,800</div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">10</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Ya Nui or Surin Beach</strong>
+                    <h4><i class="fas fa-umbrella-beach"></i> Ya Nui or Surin Beach</h4>
                     <p>Exploring the local coastlines.</p>
                 </div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">11</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Phi Phi Island Trip</strong>
+                    <h4><i class="fas fa-water"></i> Phi Phi Island Trip</h4>
                     <p>The iconic Maya Bay and snorkeling.</p>
                 </div>
                 <div class="price-tag">฿ 5,200</div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">12</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Freedom Beach</strong>
+                    <h4><i class="fas fa-route"></i> Freedom Beach</h4>
                     <p>Hidden gem visit.</p>
                 </div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">13</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Elephant Sanctuary</strong>
+                    <h4><i class="fas fa-paw"></i> Elephant Sanctuary</h4>
                     <p>Ethical interaction and feeding.</p>
                 </div>
                 <div class="price-tag">฿ 10,000</div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">14</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>FREE DAY!!!!</strong>
+                    <h4><i class="fas fa-running"></i> FREE DAY!!!!</h4>
                     <p>Open schedule for last-minute exploring.</p>
                 </div>
                 <div class="price-tag free-tag">OPEN</div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">15</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Leave Phuket 8:20am.</strong>
-                
-
+                    <h4><i class="fas fa-plane-departure"></i> Leave Phuket</h4>
+                    <p>Depart 8:20am.</p>
                 </div>
             </div>
+
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">16</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Arrive Oryx Hotel Doha 11am.</strong>
-                   
-
+                    <h4><i class="fas fa-bed"></i> Arrive Doha</h4>
+                    <p>Oryx Hotel Check-in 11am.</p>
                 </div>
             </div>
 
-<div class="list-item">
+            <div class="list-item">
                 <div class="date-box">
                     <span class="day">17</span>
                     <span class="month">March</span>
                 </div>
                 <div class="activity-details">
-                    <strong>Leave Doho 8:10am.</strong>
-<p>Arrive in Atlanta 4:15pm</p>
-<p>Collect rental car (National)</p>
-
-                    
-
+                    <h4><i class="fas fa-home"></i> Home Sweet Home</h4>
+                    <p>Leave Doha 8:10am.</p>
+                    <p>Arrive Atlanta 4:15pm.</p>
+                    <p>Collect rental car (National).</p>
                 </div>
             </div>
-
 
         </div>
     </div>
@@ -380,7 +430,7 @@
             const distance = targetDate - now;
 
             if (distance < 0) {
-                document.getElementById("countdown").innerHTML = "Trip Started!";
+                document.getElementById("countdown").innerHTML = "Welcome to Thailand!";
                 return;
             }
 
@@ -389,15 +439,13 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").textContent = days.toString().padStart(2, '0');
-            document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
-            document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
-            document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
+            // Using template literals for cleaner code
+            document.getElementById("countdown").innerHTML = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
         setInterval(updateCountdown, 1000);
         updateCountdown();
     </script>
 </body>
-
 </html>
