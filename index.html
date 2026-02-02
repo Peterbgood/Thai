@@ -30,7 +30,7 @@
                 url('https://static.vecteezy.com/system/resources/previews/008/316/012/non_2x/aerial-view-of-phi-phi-island-with-maya-bay-and-phi-leh-lake-krabi-province-top-view-of-a-rocky-tropical-island-isolated-with-turquoise-water-and-white-beach-thailand-free-photo.jpg');
             background-size: cover;
             background-position: center;
-            height: 500px;
+            height: 550px; /* Increased slightly to fit clocks */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -38,11 +38,49 @@
             color: white;
             text-align: center;
             padding: 20px;
+            position: relative;
+        }
+
+        /* WORLD CLOCKS */
+        .clock-container {
+            position: absolute;
+            top: 30px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .clock-bubble {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            text-align: center;
+            min-width: 100px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .clock-bubble .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .clock-bubble .time {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
         }
 
         .hero h1 {
             font-size: 4rem;
-            margin: 0;
+            margin: 60px 0 0 0; /* Added top margin to clear clocks */
             letter-spacing: 6px;
             font-weight: 800;
             text-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -226,6 +264,13 @@
         @media (max-width: 600px) {
             .hero h1 { font-size: 2.8rem; }
             
+            .clock-bubble {
+                padding: 8px 12px;
+                min-width: 80px;
+            }
+            .clock-bubble .label { font-size: 0.65rem; }
+            .clock-bubble .time { font-size: 0.9rem; }
+
             .list-item {
                 grid-template-columns: 70px 1fr;
                 gap: 15px;
@@ -251,6 +296,22 @@
 
 <body>
     <div class="hero">
+        
+        <div class="clock-container">
+            <div class="clock-bubble">
+                <span class="label">Knoxville</span>
+                <div class="time" id="time-knox">--:--</div>
+            </div>
+            <div class="clock-bubble">
+                <span class="label">Doha</span>
+                <div class="time" id="time-doha">--:--</div>
+            </div>
+            <div class="clock-bubble">
+                <span class="label">Phuket</span>
+                <div class="time" id="time-phuket">--:--</div>
+            </div>
+        </div>
+
         <h1>PHUKET</h1>
         <p>MARCH 5 — MARCH 17, 2026</p>
 
@@ -461,6 +522,7 @@
     </div>
 
     <script>
+        // --- COUNTDOWN LOGIC ---
         const targetDate = new Date("2026-03-05T00:00:00").getTime();
 
         function updateCountdown() {
@@ -481,8 +543,39 @@
                 `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
 
-        setInterval(updateCountdown, 1000);
+        // --- WORLD CLOCK LOGIC ---
+        function updateClocks() {
+            const now = new Date();
+
+            // Function to format time for specific timezone
+            const formatTime = (timeZone) => {
+                return now.toLocaleTimeString('en-US', {
+                    timeZone: timeZone,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            };
+
+            // Knoxville (Eastern Time)
+            document.getElementById("time-knox").innerText = formatTime('America/New_York');
+            
+            // Doha (Arabia Standard Time)
+            document.getElementById("time-doha").innerText = formatTime('Asia/Qatar');
+            
+            // Phuket (Indochina Time)
+            document.getElementById("time-phuket").innerText = formatTime('Asia/Bangkok');
+        }
+
+        // Update everything every second
+        setInterval(() => {
+            updateCountdown();
+            updateClocks();
+        }, 1000);
+
+        // Run immediately on load
         updateCountdown();
+        updateClocks();
     </script>
 </body>
 </html>
