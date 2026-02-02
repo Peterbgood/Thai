@@ -88,7 +88,7 @@
             z-index: 10;
         }
 
-        /* QUICK STATS (Now using the class you created!) */
+        /* QUICK STATS */
         .quick-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -301,11 +301,13 @@
                 <div class="activity-details">
                     <h4><i class="fas fa-map-marker-alt"></i> Touchdown Thailand</h4>
                     <p>Arrive 6:55pm.</p>
-                     <p>Take taxi to Kata Ozo Hotel (1:10 drive) <a href="https://maps.app.goo.gl/XGsmqBd4kn81ZydM6" target="_blank">Directions</a>
-                     </p>
+                    <p>Take taxi to Kata Ozo Hotel (1:10 drive) 
+                        <a href="https://maps.app.goo.gl/XGsmqBd4kn81ZydM6" target="_blank">Directions</a>
+                    </p>
                 </div>
             </div>
 
+            <!-- Beach & Pool Day -->
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">08</span>
@@ -314,9 +316,13 @@
                 <div class="activity-details">
                     <h4><i class="fas fa-swimming-pool"></i> Beach & Pool Day</h4>
                     <p>Acclimatize and relax at the resort.</p>
+                    <p>Kata Beach: 
+                        <a href="https://maps.app.goo.gl/5BvL9dR9pX2pYy1a8" target="_blank">View on map</a>
+                    </p>
                 </div>
             </div>
 
+            <!-- Raya & Coral Island -->
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">09</span>
@@ -325,10 +331,17 @@
                 <div class="activity-details">
                     <h4><i class="fas fa-anchor"></i> Raya & Coral Island</h4>
                     <p>Full day boat excursion.</p>
+                    <p>Raya (Racha) Island: 
+                        <a href="https://maps.app.goo.gl/FH1xZkz4hZ7oZ2Dg7" target="_blank">Map</a>
+                    </p>
+                    <p>Coral Island (Koh Hey): 
+                        <a href="https://maps.app.goo.gl/1LJq8p8m5jJkz5Z69" target="_blank">Map</a>
+                    </p>
                 </div>
                 <div class="price-tag">฿ 4,800</div>
             </div>
 
+            <!-- Ya Nui or Surin Beach -->
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">10</span>
@@ -337,9 +350,16 @@
                 <div class="activity-details">
                     <h4><i class="fas fa-umbrella-beach"></i> Ya Nui or Surin Beach</h4>
                     <p>Exploring the local coastlines.</p>
+                    <p>Ya Nui Beach: 
+                        <a href="https://maps.app.goo.gl/9dQp1jYbP3yZ9Z8T7" target="_blank">Map</a>
+                    </p>
+                    <p>Surin Beach: 
+                        <a href="https://maps.app.goo.gl/QNnXn1H3ZQ1h5t8u9" target="_blank">Map</a>
+                    </p>
                 </div>
             </div>
 
+            <!-- Phi Phi Island -->
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">11</span>
@@ -348,10 +368,14 @@
                 <div class="activity-details">
                     <h4><i class="fas fa-water"></i> Phi Phi Island Trip</h4>
                     <p>The iconic Maya Bay and snorkeling.</p>
+                    <p>Maya Bay (Phi Phi Leh): 
+                        <a href="https://maps.app.goo.gl/8xXQXyQ9pBz8kYkC7" target="_blank">Map</a>
+                    </p>
                 </div>
                 <div class="price-tag">฿ 5,200</div>
             </div>
 
+            <!-- Freedom Beach -->
             <div class="list-item">
                 <div class="date-box">
                     <span class="day">12</span>
@@ -360,6 +384,9 @@
                 <div class="activity-details">
                     <h4><i class="fas fa-route"></i> Freedom Beach</h4>
                     <p>Hidden gem visit.</p>
+                    <p>Freedom Beach: 
+                        <a href="https://maps.app.goo.gl/6yL8VfZgJ9C2hY8K9" target="_blank">Map</a>
+                    </p>
                 </div>
             </div>
 
@@ -442,7 +469,6 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Using template literals for cleaner code
             document.getElementById("countdown").innerHTML = 
                 `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
