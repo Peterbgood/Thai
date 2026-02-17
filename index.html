@@ -259,30 +259,41 @@ const checklistSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_Cn
         }
 
         async function fetchChecklist() {
-            try {
-                const response = await fetch(checklistSheetUrl);
-                const data = await response.text();
-                const rows = data.split(/\r?\n/).slice(1);
-                const list = document.getElementById('checklist-content');
-                
-                let html = `<div class="check-grid check-header"><div>Item</div><div>Dad</div><div>Mom</div><div>Srh</div><div>Soph</div></div>`;
-                
-                rows.forEach(row => {
-                    const col = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, '').trim());
-                    if (col.length < 5) return;
-                    const getIcon = (v) => v.toUpperCase() === 'TRUE' ? '<i class="fas fa-check-circle"></i>' : '<i class="far fa-circle"></i>';
-                    
-                    html += `<div class="check-grid">
-                        <div style="font-weight:500">${col[0]}</div>
-                        <div class="status-icon">${getIcon(col[1])}</div>
-                        <div class="status-icon">${getIcon(col[2])}</div>
-                        <div class="status-icon">${getIcon(col[3])}</div>
-                        <div class="status-icon">${getIcon(col[4])}</div>
-                    </div>`;
-                });
-                list.innerHTML = html;
-            } catch (e) { console.error(e); }
-        }
+    try {
+        const response = await fetch(checklistSheetUrl);
+        const data = await response.text();
+        const rows = data.split(/\r?\n/).slice(1);
+        const list = document.getElementById('checklist-content');
+        
+        let html = `<div class="check-grid check-header"><div>Item</div><div>Dad</div><div>Mom</div><div>Srh</div><div>Soph</div></div>`;
+        
+        rows.forEach(row => {
+            const col = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/"/g, '').trim());
+            if (col.length < 5) return;
+
+            // This function now checks for "y", "yes", or "true"
+            const getIcon = (val) => {
+                const v = val.toLowerCase();
+                if (v === 'y' || v === 'yes' || v === 'true') {
+                    return '<i class="fas fa-check-circle"></i>';
+                }
+                return '<i class="far fa-circle"></i>';
+            };
+            
+            html += `<div class="check-grid">
+                <div style="font-weight:500">${col[0]}</div>
+                <div class="status-icon">${getIcon(col[1])}</div>
+                <div class="status-icon">${getIcon(col[2])}</div>
+                <div class="status-icon">${getIcon(col[3])}</div>
+                <div class="status-icon">${getIcon(col[4])}</div>
+            </div>`;
+        });
+        list.innerHTML = html;
+    } catch (e) { 
+        console.error(e); 
+        document.getElementById('checklist-content').innerHTML = "Error loading checklist. Check your CSV link.";
+    }
+}
 
         // --- 4. CLOCKS & COUNTDOWN ---
         function updateClocks() {
