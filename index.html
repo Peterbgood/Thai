@@ -11,20 +11,26 @@
             --bg: #f8fafc; --white: #ffffff; --text-light: #64748b; --check-green: #22c55e;
         }
 
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: #334155; margin: 0; padding-bottom: 80px; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: #334155; margin: 0; padding-bottom: 90px; }
 
         /* HERO & CLOCKS */
-        .hero { background: linear-gradient(rgba(2,48,71,0.6), rgba(2,48,71,0.4)), url('https://static.vecteezy.com/system/resources/previews/008/316/012/non_2x/aerial-view-of-phi-phi-island-with-maya-bay-and-phi-leh-lake-krabi-province-top-view-of-a-rocky-tropical-island-isolated-with-turquoise-water-and-white-beach-thailand-free-photo.jpg'); background-size: cover; background-position: center; height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; position: relative; }
-        .clock-container { position: absolute; top: 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; }
-        .clock-bubble { background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); padding: 5px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3); font-size: 0.75rem; }
-        .hero h1 { font-size: 3.5rem; margin: 20px 0 10px 0; letter-spacing: 5px; font-weight: 800; }
-        #countdown { font-weight: bold; font-size: 1.1rem; background: rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.3); }
+        .hero { background: linear-gradient(rgba(2,48,71,0.6), rgba(2,48,71,0.4)), url('https://static.vecteezy.com/system/resources/previews/008/316/012/non_2x/aerial-view-of-phi-phi-island-with-maya-bay-and-phi-leh-lake-krabi-province-top-view-of-a-rocky-tropical-island-isolated-with-turquoise-water-and-white-beach-thailand-free-photo.jpg'); background-size: cover; background-position: center; height: 380px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; position: relative; }
+        .clock-container { position: absolute; top: 15px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        .clock-bubble { background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); padding: 4px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.3); font-size: 0.7rem; }
+        .hero h1 { font-size: 3rem; margin: 15px 0 10px 0; letter-spacing: 4px; font-weight: 800; }
+        #countdown { font-weight: bold; font-size: 1rem; background: rgba(255,255,255,0.2); padding: 6px 15px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.3); }
 
         /* CONTAINERS */
-        .container { max-width: 800px; margin: -40px auto 0; padding: 0 15px; position: relative; z-index: 10; }
+        .container { max-width: 800px; margin: -30px auto 0; padding: 0 15px; position: relative; z-index: 10; }
         .main-list { background: var(--white); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 20px; }
         
-        /* ITINERARY */
+        /* NEW WEATHER STYLE */
+        .weather-banner { background: var(--white); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-around; text-align: center; }
+        .weather-temp { font-size: 2rem; font-weight: 800; color: var(--primary); }
+        .weather-info { color: var(--text-light); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .weather-icon { font-size: 2.5rem; color: var(--accent); }
+
+        /* ITINERARY & CHECKLIST */
         .list-item { display: grid; grid-template-columns: 70px 1fr auto; padding: 20px; border-bottom: 1px solid #f1f5f9; align-items: center; }
         .date-box { text-align: center; border-right: 2px solid #f1f5f9; }
         .date-box .day { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: block; }
@@ -32,30 +38,25 @@
         .activity-details { padding: 0 15px; }
         .activity-details h4 { margin: 0 0 5px; color: var(--primary); font-size: 1.1rem; }
         .activity-details p { margin: 3px 0; font-size: 0.9rem; color: var(--text-light); line-height: 1.4; }
-        .price-tag { background: #dcfce7; color: #166534; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; }
+        .price-tag { background: #dcfce7; color: #166534; padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
 
-        /* CHECKLIST */
         .search-container { position: sticky; top: 10px; z-index: 100; margin-bottom: 15px; }
-        .search-bar { width: 100%; padding: 15px; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-size: 1rem; box-sizing: border-box; }
-        .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 50px); padding: 15px; border-bottom: 1px solid #f1f5f9; align-items: center; }
+        .search-bar { width: 100%; padding: 15px; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-size: 1rem; box-sizing: border-box; outline: none; }
+        .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 45px); padding: 15px; border-bottom: 1px solid #f1f5f9; align-items: center; }
         .check-header { background: #f8fafc; font-weight: bold; font-size: 0.7rem; text-align: center; text-transform: uppercase; color: var(--text-light); }
-        .status-icon { text-align: center; font-size: 1.4rem; cursor: pointer; transition: transform 0.1s; }
-        .status-icon:active { transform: scale(1.3); }
+        .status-icon { text-align: center; font-size: 1.4rem; cursor: pointer; }
         .fa-check-circle { color: var(--check-green); }
-        .fa-circle { color: #e2e8f0; }
+        .far.fa-circle { color: #e2e8f0; }
 
-        /* NAV */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); z-index: 1000; }
         .nav-btn { border: none; background: none; color: var(--text-light); display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; flex: 1; cursor: pointer; gap: 4px; }
         .nav-btn.active { color: var(--accent); }
-
-        .weather-card { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; }
+        .nav-btn i { font-size: 1.3rem; }
 
         @media (max-width: 600px) {
             .hero h1 { font-size: 2.5rem; }
-            .check-grid { grid-template-columns: 1fr repeat(4, 42px); font-size: 0.9rem; }
+            .check-grid { grid-template-columns: 1fr repeat(4, 40px); font-size: 0.85rem; }
             .list-item { grid-template-columns: 60px 1fr; }
-            .price-tag { grid-column: 2; justify-self: start; margin-top: 10px; }
         }
     </style>
 </head>
@@ -72,15 +73,18 @@
             <div id="countdown">Loading...</div>
         </div>
         <div class="container">
-            <div class="weather-card">
-                <a class="weatherwidget-io" href="https://forecast7.com/en/7d8998d40/phuket/" data-label_1="PHUKET" data-label_2="WEATHER" data-theme="pure" >PHUKET WEATHER</a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
+            <div class="weather-banner">
+                <div id="weather-icon-div" class="weather-icon"><i class="fas fa-cloud-sun"></i></div>
+                <div>
+                    <div class="weather-temp" id="phuket-temp">--°F</div>
+                    <div class="weather-info" id="phuket-desc">Fetching Weather...</div>
+                </div>
             </div>
             <div class="main-list" id="itinerary-list"></div>
         </div>
     </div>
 
-    <div id="checklist-page" style="display:none; padding: 20px 0;">
+    <div id="checklist-page" style="display:none; padding-top: 20px;">
         <div class="container" style="margin-top: 0;">
             <div class="search-container">
                 <input type="text" class="search-bar" id="checklistSearch" placeholder="Search packing list..." onkeyup="filterChecklist()">
@@ -95,21 +99,42 @@
     </nav>
 
     <script>
-        // --- 1. CONFIGURATION ---
         const itineraryUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_CnsbDUPOjrATctJ5byGVkKLOrjBuv3mwvMVcaLVKI03faBrL7GOHMX3a8n5SzMfLrgrtrZoIB-xG/pub?gid=0&single=true&output=csv';
         const checklistUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_CnsbDUPOjrATctJ5byGVkKLOrjBuv3mwvMVcaLVKI03faBrL7GOHMX3a8n5SzMfLrgrtrZoIB-xG/pub?gid=1402744317&single=true&output=csv';
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbztFmfC3itFXEEJw3WtmCwgawop6-T6DEo2zURV2gd8bFTpOt0vNkqlFVBpSVdwEg6Q/exec';
 
-        // --- 2. NAVIGATION ---
         function showPage(p) {
             document.getElementById('itinerary-page').style.display = p==='itinerary'?'block':'none';
             document.getElementById('checklist-page').style.display = p==='checklist'?'block':'none';
             document.getElementById('btn-itinerary').classList.toggle('active', p==='itinerary');
             document.getElementById('btn-checklist').classList.toggle('active', p==='checklist');
-            if(p==='checklist') fetchChecklist();
+            if(p === 'checklist') fetchChecklist();
         }
 
-        // --- 3. DATA FETCHING ---
+        // --- NEW RELIABLE WEATHER FUNCTION ---
+        async function getLiveWeather() {
+            try {
+                // Coordinates for Phuket
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=7.89&longitude=98.40&current=temperature_2m,weather_code&temperature_unit=fahrenheit');
+                const data = await res.json();
+                const temp = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+                
+                document.getElementById('phuket-temp').innerText = temp + '°F';
+                
+                let desc = "Clear Skies";
+                let icon = '<i class="fas fa-sun"></i>';
+                
+                if (code > 0) { desc = "Cloudy"; icon = '<i class="fas fa-cloud-sun"></i>'; }
+                if (code > 50) { desc = "Rainy"; icon = '<i class="fas fa-cloud-showers-heavy"></i>'; }
+                
+                document.getElementById('phuket-desc').innerText = desc;
+                document.getElementById('weather-icon-div').innerHTML = icon;
+            } catch (e) {
+                document.getElementById('phuket-desc').innerText = "Weather Unavailable";
+            }
+        }
+
         async function fetchItinerary() {
             try {
                 const res = await fetch(itineraryUrl);
@@ -122,7 +147,10 @@
                     if(c.length < 5) return;
                     list.innerHTML += `<div class="list-item">
                         <div class="date-box"><span class="day">${c[0]}</span><span class="month">${c[1]}</span></div>
-                        <div class="activity-details"><h4><i class="fas ${c[2]}"></i> ${c[3]}</h4><p>${c[4].split(';').join('</p><p>')}</p></div>
+                        <div class="activity-details">
+                            <h4><i class="fas ${c[2]}"></i> ${c[3]}</h4>
+                            <p>${c[4].split(';').join('</p><p>')}</p>
+                        </div>
                         ${c[5]?`<div class="price-tag">${c[5]}</div>`:''}
                     </div>`;
                 });
@@ -131,7 +159,6 @@
 
         async function fetchChecklist() {
             try {
-                // cachebust helps skip some of the google sheet 5-min delay
                 const res = await fetch(checklistUrl + '&cb=' + Date.now());
                 const data = await res.text();
                 const rows = data.split(/\r?\n/).slice(1);
@@ -142,17 +169,13 @@
                     const c = r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/"/g, '').trim());
                     if(c.length < 5) return;
                     let rowHtml = `<div style="font-weight:500">${c[0]}</div>`;
-                    
                     people.forEach((person, i) => {
-                        const storageKey = `${c[0]}-${person}`;
+                        const key = `${c[0]}-${person}`;
                         const sheetVal = (c[i+1] || 'n').toLowerCase();
-                        
-                        // Check local memory first, then sheet data
-                        const localVal = localStorage.getItem(storageKey);
-                        const isActive = localVal ? (localVal === 'y') : (sheetVal === 'y' || sheetVal === 'true');
-
-                        rowHtml += `<div class="status-icon" onclick="toggleCheck('${c[0].replace(/'/g, "\\'")}', '${person}', ${isActive}, this)">
-                            <i class="${isActive?'fas fa-check-circle':'far fa-circle'}"></i></div>`;
+                        const localVal = localStorage.getItem(key);
+                        const active = localVal ? (localVal === 'y') : (sheetVal === 'y' || sheetVal === 'true');
+                        rowHtml += `<div class="status-icon" onclick="toggleCheck('${c[0].replace(/'/g, "\\'")}', '${person}', ${active}, this)">
+                            <i class="${active?'fas fa-check-circle':'far fa-circle'}"></i></div>`;
                     });
                     html += `<div class="check-grid">${rowHtml}</div>`;
                 });
@@ -160,34 +183,21 @@
             } catch (e) { console.error(e); }
         }
 
-        // --- 4. TOGGLE & SYNC ---
         function toggleCheck(item, person, isChecked, el) {
             const newStatus = isChecked ? 'n' : 'y';
-            const storageKey = `${item}-${person}`;
-            
-            // 1. Instant UI update
+            localStorage.setItem(`${item}-${person}`, newStatus);
             el.querySelector('i').className = newStatus === 'y' ? 'fas fa-check-circle' : 'far fa-circle';
             el.onclick = () => toggleCheck(item, person, !isChecked, el);
-
-            // 2. Save locally so refresh doesn't wipe it
-            localStorage.setItem(storageKey, newStatus);
-
-            // 3. Sync to Google Sheets
-            fetch(`${scriptUrl}?item=${encodeURIComponent(item)}&person=${person}&status=${newStatus}`, { mode: 'no-cors' })
-                .then(() => console.log("Synced: " + item))
-                .catch(e => console.error("Sync Error", e));
+            fetch(`${scriptUrl}?item=${encodeURIComponent(item)}&person=${person}&status=${newStatus}`, { mode: 'no-cors' });
         }
 
         function filterChecklist() {
             const q = document.getElementById('checklistSearch').value.toLowerCase();
-            const items = document.querySelectorAll('#checklist-content .check-grid:not(.check-header)');
-            items.forEach(item => {
-                const text = item.firstElementChild.innerText.toLowerCase();
-                item.style.display = text.includes(q) ? 'grid' : 'none';
+            document.querySelectorAll('#checklist-content .check-grid:not(.check-header)').forEach(item => {
+                item.style.display = item.firstElementChild.innerText.toLowerCase().includes(q) ? 'grid' : 'none';
             });
         }
 
-        // --- 5. CLOCKS ---
         function updateClocks() {
             const now = new Date();
             const fmt = (tz) => now.toLocaleTimeString('en-US', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: true });
@@ -195,17 +205,15 @@
             document.getElementById("time-doha").innerText = fmt('Asia/Qatar');
             document.getElementById("time-phuket").innerText = fmt('Asia/Bangkok');
             
-            const target = new Date("2026-03-05T00:00:00");
-            const diff = target - now;
-            if (diff < 0) { document.getElementById("countdown").innerText = "Trip Started!"; return; }
-            const days = Math.floor(diff / 86400000);
-            const hours = Math.floor((diff % 86400000) / 3600000);
-            document.getElementById("countdown").innerText = `${days} Days ${hours} Hours until Takeoff!`;
+            const diff = new Date("2026-03-05T00:00:00") - now;
+            if (diff < 0) { document.getElementById("countdown").innerText = "Enjoy Thailand!"; return; }
+            document.getElementById("countdown").innerText = `${Math.floor(diff/86400000)} Days ${Math.floor((diff%86400000)/3600000)} Hours until Takeoff!`;
         }
 
         setInterval(updateClocks, 1000);
         updateClocks();
         fetchItinerary();
+        getLiveWeather(); // Fetch live weather on load
     </script>
 </body>
 </html>
