@@ -9,41 +9,34 @@
         :root { --primary: #023047; --accent: #fb8500; --bg: #f1f5f9; --white: #ffffff; --green: #10b981; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; color: #1e293b; }
         
-        /* MODALS */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2, 48, 71, 0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .modal-content { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; }
         .modal-content textarea { width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-size: 1rem; height: 120px; font-family: inherit; }
 
-        /* HERO & SYNC */
         .hero { background: var(--primary); color: white; padding: 30px 20px; text-align: center; border-bottom: 4px solid var(--accent); }
-        .hero h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; }
+        .hero h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; }
         
         .sync-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
-        #sync-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        #sync-btn:hover { background: var(--accent); border-color: var(--accent); }
+        #sync-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         #last-update { font-size: 0.65rem; color: rgba(255,255,255,0.6); font-family: monospace; }
         
         .spin-anim { animation: spin 0.8s linear; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* CARDS & LAYOUT */
         .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
         .card { background: var(--white); border-radius: 16px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .iti-row { display: flex; gap: 15px; align-items: flex-start; }
         .date-box { min-width: 55px; text-align: center; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
         .date-box b { font-size: 1.2rem; display: block; color: var(--primary); }
 
-        /* CHECKLIST */
         .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 40px); align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
         .status-icon { cursor: pointer; font-size: 1.5rem; color: #cbd5e1; text-align: center; }
         .status-icon.active { color: var(--green); }
 
-        /* ADMIN UI */
         .admin-only { display: none !important; }
         .edit-mode .admin-only { display: block !important; }
         .edit-btn { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; margin-top: 8px; cursor: pointer; font-weight: bold; }
         
-        /* NAVIGATION */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 15px 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
         .nav-btn { flex: 1; border: none; background: none; color: #94a3b8; cursor: pointer; text-align: center; }
         .nav-btn.active { color: var(--accent); font-weight: bold; }
@@ -105,6 +98,7 @@
         
         let isAdmin = false;
         let currentPin = "";
+        let localOverrides = JSON.parse(localStorage.getItem('trip_overrides') || '{}');
 
         function openM(id) { document.getElementById(id).style.display = 'flex'; }
         function closeM(id) { document.getElementById(id).style.display = 'none'; }
@@ -135,14 +129,15 @@
         async function manualSync() {
             const icon = document.querySelector('#sync-btn i');
             icon.classList.add('spin-anim');
-            showToast("Refreshing data...");
+            showToast("Bypassing cache...");
             await render();
             setTimeout(() => icon.classList.remove('spin-anim'), 800);
         }
 
         async function render() {
             try {
-                const cb = `&t=${new Date().getTime()}`;
+                // High-precision cache buster
+                const cb = `&t=${new Date().getTime()}&rand=${Math.random()}`;
                 const resI = await fetch(CSV_ITI + cb);
                 const textI = await resI.text();
                 const rowsI = textI.split('\n').slice(1);
@@ -151,14 +146,20 @@
                 rowsI.forEach((line, i) => {
                     const c = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/"/g, '').trim());
                     if(c.length < 4) return;
+                    
+                    const rowId = i + 2;
+                    // Check if we have a local "fresh" version to override the old Google data
+                    const title = localOverrides[`iti-${rowId}-4`] || c[3];
+                    const desc = localOverrides[`iti-${rowId}-5`] || c[4];
+
                     htmlI += `<div class="card iti-row">
                         <div class="date-box"><b>${c[0]}</b><small>${c[1]}</small></div>
                         <div style="flex:1">
-                            <h4 class="iti-title" style="margin:0">${c[3]}</h4>
-                            <p class="iti-desc" style="font-size:0.85rem; color:#64748b; margin:6px 0;">${c[4]}</p>
+                            <h4 class="iti-title" style="margin:0">${title}</h4>
+                            <p class="iti-desc" style="font-size:0.85rem; color:#64748b; margin:6px 0;">${desc}</p>
                             <div class="admin-only">
-                                <button class="edit-btn" onclick="showEditor(${i+2}, 4, 'title', this)">Edit Title</button>
-                                <button class="edit-btn" onclick="showEditor(${i+2}, 5, 'desc', this)">Edit Desc</button>
+                                <button class="edit-btn" onclick="showEditor(${rowId}, 4, 'title', this)">Edit Title</button>
+                                <button class="edit-btn" onclick="showEditor(${rowId}, 5, 'desc', this)">Edit Desc</button>
                             </div>
                         </div>
                     </div>`;
@@ -185,10 +186,7 @@
                 
                 const now = new Date();
                 document.getElementById('last-update').innerText = "Last Sync: " + now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0');
-            } catch(e) { 
-                console.error(e); 
-                document.getElementById('last-update').innerText = "Sync Failed";
-            }
+            } catch(e) { console.error(e); }
         }
 
         function showEditor(row, col, field, btn) {
@@ -201,11 +199,23 @@
             
             document.getElementById('save-btn').onclick = async () => {
                 const newVal = document.getElementById('edit-text').value;
+                
+                // SAVE TO LOCAL OVERRIDES so it doesn't flip back on refresh
+                localOverrides[`iti-${row}-${col}`] = newVal;
+                localStorage.setItem('trip_overrides', JSON.stringify(localOverrides));
+                
                 currentElement.innerText = newVal;
                 closeM('edit-modal');
-                showToast("Updating Google...");
+                showToast("Pushing to Google...");
+                
                 await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Itinerary&row=${row}&col=${col}&value=${encodeURIComponent(newVal)}`, {mode:'no-cors'});
-                showToast("Saved!");
+                showToast("Saved to Cloud");
+                
+                // Keep local override for 2 mins to give Google time to sync globally
+                setTimeout(() => {
+                    delete localOverrides[`iti-${row}-${col}`];
+                    localStorage.setItem('trip_overrides', JSON.stringify(localOverrides));
+                }, 120000);
             };
         }
 
@@ -215,7 +225,7 @@
             const nowActive = !icon.classList.contains('active');
             icon.classList.toggle('active');
             await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Checklist&item=${encodeURIComponent(item)}&person=${person}&status=${nowActive?'y':'n'}`, {mode:'no-cors'});
-            showToast("Saved");
+            showToast("Syncing...");
         }
 
         render();
