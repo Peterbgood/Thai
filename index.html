@@ -3,197 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thailand 2026 | Admin</title>
+    <title>Thailand 2026 | Trip Admin</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --primary: #023047; --accent: #fb8500; --bg: #f1f5f9; --white: #ffffff; --green: #10b981; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); margin: 0; padding-bottom: 90px; color: #1e293b; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; color: #1e293b; }
         
         /* MODALS (PIN & EDITOR) */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2, 48, 71, 0.9); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
-        .modal-content input, .modal-content textarea { width: 100%; padding: 12px; margin: 15px 0; font-size: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-family: inherit; }
-        .modal-content textarea { height: 100px; resize: none; }
-        
-        /* TOAST NOTIFICATION */
-        #toast { visibility: hidden; background: var(--primary); color: white; padding: 12px 25px; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); border-radius: 50px; z-index: 3000; font-size: 0.9rem; }
-        #toast.show { visibility: visible; animation: fade 0.3s; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2, 48, 71, 0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .modal-content input, .modal-content textarea { width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-size: 1rem; }
+        .modal-content textarea { height: 120px; font-family: inherit; }
 
-        /* LAYOUT */
-        .hero { background: var(--primary); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--accent); }
-        .container { max-width: 700px; margin: 20px auto; padding: 0 15px; }
-        .card { background: var(--white); border-radius: 16px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        /* UI ELEMENTS */
+        .hero { background: var(--primary); color: white; padding: 30px 20px; text-align: center; border-bottom: 4px solid var(--accent); position: relative; }
+        .hero h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; }
+        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
+        .card { background: var(--white); border-radius: 16px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        /* ITINERARY */
-        .itinerary-row { display: grid; grid-template-columns: 60px 1fr; gap: 15px; align-items: start; }
-        .date-badge { text-align: center; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
-        .date-badge b { font-size: 1.2rem; display: block; color: var(--primary); }
-        .price { color: var(--green); font-weight: 800; font-size: 0.85rem; display: block; margin-top: 5px; }
-
-        /* CHECKLIST */
-        .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 45px); align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
-        .status-icon { cursor: pointer; font-size: 1.6rem; text-align: center; color: #cbd5e1; transition: 0.2s; }
+        /* ITINERARY STYLE */
+        .iti-row { display: flex; gap: 15px; align-items: flex-start; }
+        .date-box { min-width: 55px; text-align: center; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .date-box b { font-size: 1.2rem; display: block; color: var(--primary); }
+        .date-box small { font-size: 0.7rem; color: #64748b; text-transform: uppercase; }
+        
+        /* CHECKLIST STYLE */
+        .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 40px); align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+        .status-icon { cursor: pointer; font-size: 1.5rem; color: #cbd5e1; text-align: center; transition: color 0.2s; }
         .status-icon.active { color: var(--green); }
 
-        /* ADMIN */
+        /* ADMIN CONTROLS */
         .admin-only { display: none !important; }
         .edit-mode .admin-only { display: block !important; }
-        .edit-btn { background: #fff; border: 1px solid var(--accent); color: var(--accent); padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; cursor: pointer; margin-top: 8px; }
-
-        /* NAV */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 12px 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
-        .nav-btn { flex: 1; border: none; background: none; color: #64748b; cursor: pointer; font-size: 0.8rem; }
+        .edit-btn { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; margin-top: 8px; cursor: pointer; font-weight: bold; }
+        
+        /* NAVIGATION */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 15px 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
+        .nav-btn { flex: 1; border: none; background: none; color: #94a3b8; cursor: pointer; text-align: center; transition: 0.3s; }
         .nav-btn.active { color: var(--accent); font-weight: bold; }
         .nav-btn i { font-size: 1.4rem; margin-bottom: 4px; }
 
-        @keyframes fade { from {opacity: 0; bottom: 70px;} to {opacity: 1; bottom: 85px;} }
+        #toast { visibility: hidden; background: #334155; color: white; padding: 12px 25px; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); border-radius: 50px; z-index: 3000; font-size: 0.85rem; }
+        #toast.show { visibility: visible; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; bottom: 70px; } to { opacity: 1; bottom: 85px; } }
     </style>
 </head>
 <body class="read-only">
 
-    <div id="toast">Updating Google Sheets...</div>
+    <div id="toast">Updating Sheets...</div>
 
     <div id="pin-modal" class="modal-overlay">
         <div class="modal-content">
-            <h2 style="margin:0">Admin Lock</h2>
-            <input type="password" id="pin-input" placeholder="••••" inputmode="numeric" maxlength="4">
-            <button onclick="checkPin()" style="width:100%; background:var(--accent); color:white; border:none; padding:15px; border-radius:12px; font-weight:bold;">Unlock System</button>
-            <button onclick="closeModal('pin-modal')" style="margin-top:15px; border:none; background:none; color:#64748b;">Close</button>
+            <i class="fas fa-lock-open fa-2x" style="color:var(--primary); margin-bottom:10px;"></i>
+            <h3 style="margin:0">Admin Access</h3>
+            <input type="password" id="pin-input" placeholder="Enter PIN" inputmode="numeric" maxlength="4">
+            <button onclick="login()" style="width:100%; background:var(--primary); color:white; border:none; padding:14px; border-radius:12px; font-weight:bold; cursor:pointer;">Unlock System</button>
+            <button onclick="closeM('pin-modal')" style="margin-top:15px; border:none; background:none; color:gray; cursor:pointer;">Cancel</button>
         </div>
     </div>
 
     <div id="edit-modal" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="edit-header">Update Entry</h3>
-            <textarea id="edit-input"></textarea>
-            <button id="save-edit-btn" style="width:100%; background:var(--primary); color:white; border:none; padding:15px; border-radius:12px; font-weight:bold;">Save Changes</button>
-            <button onclick="closeModal('edit-modal')" style="margin-top:15px; border:none; background:none; color:#64748b;">Cancel</button>
+            <h3 id="edit-title">Update Entry</h3>
+            <textarea id="edit-text"></textarea>
+            <button id="save-btn" style="width:100%; background:var(--accent); color:white; border:none; padding:14px; border-radius:12px; font-weight:bold; cursor:pointer;">Save Changes</button>
+            <button onclick="closeM('edit-modal')" style="margin-top:15px; border:none; background:none; color:gray; cursor:pointer;">Cancel</button>
         </div>
     </div>
 
-    <div id="itinerary-page">
+    <div id="p-itinerary">
         <div class="hero">
-            <h1>ITINERARY</h1>
-            <button id="login-btn" onclick="openModal('pin-modal')" style="background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:8px 20px; border-radius:50px; cursor:pointer;">Login</button>
-            <button id="logout-btn" class="admin-only" onclick="location.reload()" style="background:var(--accent); border:none; color:white; padding:8px 20px; border-radius:50px; cursor:pointer;">Logout</button>
+            <h1>PLAN</h1>
+            <button id="login-btn" onclick="openM('pin-modal')" style="background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:6px 16px; border-radius:20px; font-size:0.75rem; margin-top:10px; cursor:pointer;">Admin Login</button>
+            <button class="admin-only" onclick="location.reload()" style="background:var(--accent); border:none; color:white; padding:6px 16px; border-radius:20px; margin: 10px auto; cursor:pointer;">Logout</button>
         </div>
-        <div class="container" id="itinerary-list">Syncing itinerary...</div>
+        <div class="container" id="list-iti">Loading itinerary...</div>
     </div>
 
-    <div id="checklist-page" style="display:none;">
-        <div class="hero"><h1>PACKING</h1></div>
-        <div class="container card" id="checklist-content">Syncing checklist...</div>
+    <div id="p-checklist" style="display:none;">
+        <div class="hero"><h1>PACK</h1></div>
+        <div class="container card" id="list-check">Loading checklist...</div>
     </div>
 
     <nav class="bottom-nav">
-        <button class="nav-btn active" id="btn-itinerary" onclick="showPage('itinerary')"><i class="fas fa-map-location-dot"></i><br>Plan</button>
-        <button class="nav-btn" id="btn-checklist" onclick="showPage('checklist')"><i class="fas fa-list-check"></i><br>Pack</button>
+        <div class="nav-btn active" id="btn-iti" onclick="tab('iti')"><i class="fas fa-calendar-day"></i><br>Plan</div>
+        <div class="nav-btn" id="btn-check" onclick="tab('check')"><i class="fas fa-clipboard-list"></i><br>Pack</div>
     </nav>
 
     <script>
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbx5kxc7H3LhjNt1KghrZCyQnYrPrLphhe2fIQ3ExGk3nx1G_V5XNzQUPLXOMTd0US9G/exec';
-        const itinerarySheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_CnsbDUPOjrATctJ5byGVkKLOrjBuv3mwvMVcaLVKI03faBrL7GOHMX3a8n5SzMfLrgrtrZoIB-xG/pub?gid=0&single=true&output=csv';
-        const checklistSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_CnsbDUPOjrATctJ5byGVkKLOrjBuv3mwvMVcaLVKI03faBrL7GOHMX3a8n5SzMfLrgrtrZoIB-xG/pub?gid=1402744317&single=true&output=csv';
+        // --- CONFIGURATION ---
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvLZ3coHbpzDzleYOfNXdKfeameKnFJBM9em2vpLe48vy_4DtBy9jbfKjffrwVaZs/exec';
+        const CSV_ITI = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_CnsbDUPOjrATctJ5byGVkKLOrjBuv3mwvMVcaLVKI03faBrL7GOHMX3a8n5SzMfLrgrtrZoIB-xG/pub?gid=0&single=true&output=csv';
+        const CSV_CHECK = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_CnsbDUPOjrATctJ5byGVkKLOrjBuv3mwvMVcaLVKI03faBrL7GOHMX3a8n5SzMfLrgrtrZoIB-xG/pub?gid=1402744317&single=true&output=csv';
         
         let isAdmin = false;
         let currentPin = "";
 
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        // --- HELPER FUNCTIONS ---
+        function openM(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeM(id) { document.getElementById(id).style.display = 'none'; }
         
-        function checkPin() {
-            if(document.getElementById('pin-input').value === "3270") {
-                isAdmin = true;
-                currentPin = "3270";
-                document.body.classList.replace('read-only', 'edit-mode');
-                document.getElementById('login-btn').style.display = 'none';
-                closeModal('pin-modal');
-                renderAll();
-            } else { alert("Access Denied"); }
-        }
-
-        function flashToast(msg) {
+        function showToast(m) {
             const t = document.getElementById('toast');
-            t.innerText = msg || "Updating Google Sheets...";
-            t.className = "show";
-            setTimeout(() => t.className = "", 2500);
+            t.innerText = m; t.className = "show";
+            setTimeout(() => t.className = "", 3000);
         }
 
-        function showPage(p) {
-            document.getElementById('itinerary-page').style.display = p==='itinerary'?'block':'none';
-            document.getElementById('checklist-page').style.display = p==='checklist'?'block':'none';
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-'+p).classList.add('active');
+        function tab(t) {
+            document.getElementById('p-itinerary').style.display = t==='iti'?'block':'none';
+            document.getElementById('p-checklist').style.display = t==='check'?'block':'none';
+            document.getElementById('btn-iti').classList.toggle('active', t==='iti');
+            document.getElementById('btn-check').classList.toggle('active', t==='check');
         }
 
-        async function renderAll() {
+        function login() {
+            if(document.getElementById('pin-input').value === "3270") {
+                isAdmin = true; currentPin = "3270";
+                document.body.className = "edit-mode";
+                document.getElementById('login-btn').style.display = 'none';
+                closeM('pin-modal');
+                render();
+                showToast("Admin Mode Active");
+            } else { alert("Incorrect PIN"); }
+        }
+
+        // --- RENDER DATA FROM GOOGLE ---
+        async function render() {
             try {
-                const iRaw = await fetch(itinerarySheetUrl + '&cb=' + Date.now());
-                const iText = await iRaw.text();
-                let iHtml = "";
-                iText.split('\n').slice(1).forEach((line, idx) => {
+                const cb = `&cache_buster=${new Date().getTime()}`;
+                
+                // ITINERARY
+                const resI = await fetch(CSV_ITI + cb);
+                const textI = await resI.text();
+                const rowsI = textI.split('\n').slice(1);
+                let htmlI = "";
+                
+                rowsI.forEach((line, i) => {
                     const c = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/"/g, '').trim());
                     if(c.length < 4) return;
-                    iHtml += `<div class="card itinerary-row">
-                        <div class="date-badge"><b>${c[0]}</b><small>${c[1]}</small></div>
-                        <div>
-                            <h4 style="margin:0">${c[3]}</h4>
-                            <p style="font-size:0.85rem; color:#64748b; margin:5px 0;">${c[4]}</p>
-                            ${c[5] ? `<span class="price">${c[5]}</span>` : ''}
+                    htmlI += `<div class="card iti-row">
+                        <div class="date-box"><b>${c[0]}</b><small>${c[1]}</small></div>
+                        <div style="flex:1">
+                            <h4 style="margin:0; color:var(--primary);">${c[3]}</h4>
+                            <p style="font-size:0.85rem; color:#64748b; margin:6px 0; line-height:1.4;">${c[4]}</p>
+                            ${c[5] ? `<span style="color:var(--green); font-weight:bold; font-size:0.8rem; background:#ecfdf5; padding:2px 6px; border-radius:4px;">${c[5]}</span>` : ''}
                             <div class="admin-only">
-                                <button class="edit-btn" onclick="openEditor(${idx+2}, 4, 'Activity Title', '${c[3].replace(/'/g, "\\'")}')">Title</button>
-                                <button class="edit-btn" onclick="openEditor(${idx+2}, 5, 'Description', '${c[4].replace(/'/g, "\\'")}')">Desc</button>
+                                <button class="edit-btn" onclick="showEditor(${i+2}, 4, 'Activity Title', '${c[3].replace(/'/g, "\\'")}')">Edit Title</button>
+                                <button class="edit-btn" onclick="showEditor(${i+2}, 5, 'Description', '${c[4].replace(/'/g, "\\'")}')">Edit Desc</button>
                             </div>
                         </div>
                     </div>`;
                 });
-                document.getElementById('itinerary-list').innerHTML = iHtml;
+                document.getElementById('list-iti').innerHTML = htmlI || "No itinerary found.";
 
-                const cRaw = await fetch(checklistSheetUrl + '&cb=' + Date.now());
-                const cText = await cRaw.text();
-                let cHtml = `<div class="check-grid" style="font-weight:bold; color:#94a3b8; font-size:0.7rem;"><div>ITEM</div><div>D</div><div>M</div><div>S</div><div>S</div></div>`;
-                cText.split('\n').slice(1).forEach(line => {
+                // CHECKLIST
+                const resC = await fetch(CSV_CHECK + cb);
+                const textC = await resC.text();
+                const rowsC = textC.split('\n').slice(1);
+                let htmlC = `<div class="check-grid" style="font-weight:bold; font-size:0.7rem; color:#94a3b8; letter-spacing:1px;"><div>ITEM</div><div>D</div><div>M</div><div>S</div><div>S</div></div>`;
+                
+                rowsC.forEach(line => {
                     const c = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/"/g, '').trim());
                     if(c.length < 5) return;
-                    cHtml += `<div class="check-grid"><div>${c[0]}</div>`;
-                    ["Dad","Mom","Sarah","Sophie"].forEach((name, i) => {
-                        const isY = c[i+1].toLowerCase().startsWith('y');
-                        cHtml += `<div onclick="toggleCheck(this, '${c[0].replace(/'/g, "\\'")}', '${name}', ${isY})">
-                            <i class="status-icon fas fa-check-circle ${isY?'active':''}"></i></div>`;
+                    htmlC += `<div class="check-grid"><div>${c[0]}</div>`;
+                    ["Dad","Mom","Sarah","Sophie"].forEach((name, idx) => {
+                        const active = c[idx+1].toLowerCase().startsWith('y');
+                        htmlC += `<div onclick="toggleCheck(this, '${c[0].replace(/'/g, "\\'")}', '${name}', ${active})">
+                            <i class="status-icon fas fa-check-circle ${active?'active':''}"></i></div>`;
                     });
-                    cHtml += `</div>`;
+                    htmlC += `</div>`;
                 });
-                document.getElementById('checklist-content').innerHTML = cHtml;
-            } catch (e) { console.error(e); }
+                document.getElementById('list-check').innerHTML = htmlC;
+
+            } catch(e) { console.error("Sync Error:", e); }
         }
 
-        function toggleCheck(el, item, person, wasActive) {
+        // --- UPDATE DATA ---
+        function showEditor(row, col, title, currentVal) {
+            document.getElementById('edit-title').innerText = "Update " + title;
+            document.getElementById('edit-text').value = currentVal;
+            openM('edit-modal');
+            
+            document.getElementById('save-btn').onclick = async () => {
+                const newVal = document.getElementById('edit-text').value;
+                closeM('edit-modal');
+                showToast("Saving to Sheets...");
+                // Note: type is "Itinerary" with capital I to match script
+                await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Itinerary&row=${row}&col=${col}&value=${encodeURIComponent(newVal)}`, {mode:'no-cors'});
+                setTimeout(render, 1500);
+            };
+        }
+
+        async function toggleCheck(el, item, person, curActive) {
             if(!isAdmin) return;
             const icon = el.querySelector('i');
-            const isNowActive = !icon.classList.contains('active');
-            icon.classList.toggle('active');
-            fetch(`${scriptUrl}?pin=${currentPin}&type=Checklist&item=${encodeURIComponent(item)}&person=${person}&status=${isNowActive ? 'y' : 'n'}`, {mode:'no-cors'})
-            .then(() => flashToast("Checklist Saved"));
+            const nowActive = !icon.classList.contains('active');
+            icon.classList.toggle('active'); // Instant Feedback
+            
+            await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Checklist&item=${encodeURIComponent(item)}&person=${person}&status=${nowActive?'y':'n'}`, {mode:'no-cors'});
+            showToast("Saved");
         }
 
-        // NEW CUSTOM EDITOR LOGIC
-        function openEditor(row, col, label, currentVal) {
-            document.getElementById('edit-header').innerText = "Update " + label;
-            document.getElementById('edit-input').value = currentVal;
-            document.getElementById('save-edit-btn').onclick = function() {
-                const newVal = document.getElementById('edit-input').value;
-                flashToast("Saving to Google...");
-                closeModal('edit-modal');
-                fetch(`${scriptUrl}?pin=${currentPin}&type=Itinerary&row=${row}&col=${col}&value=${encodeURIComponent(newVal)}`, {mode:'no-cors'})
-                .then(() => {
-                    flashToast("Plan Updated!");
-                    setTimeout(renderAll, 1500);
-                });
-            };
-            openModal('edit-modal');
-        }
-
-        renderAll();
+        // Initialize
+        render();
     </script>
 </body>
 </html>
