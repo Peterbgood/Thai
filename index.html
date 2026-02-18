@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thailand 2026 | Trip Admin</title>
+    <title>Thailand 2026 | Live Trip Admin</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --primary: #023047; --accent: #fb8500; --bg: #f1f5f9; --white: #ffffff; --green: #10b981; }
@@ -15,11 +15,9 @@
 
         .hero { background: var(--primary); color: white; padding: 30px 20px; text-align: center; border-bottom: 4px solid var(--accent); }
         .hero h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; }
-        
         .sync-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
         #sync-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         #last-update { font-size: 0.65rem; color: rgba(255,255,255,0.6); font-family: monospace; }
-        
         .spin-anim { animation: spin 0.8s linear; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
@@ -27,11 +25,14 @@
         .card { background: var(--white); border-radius: 16px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .iti-row { display: flex; gap: 15px; align-items: flex-start; }
         .date-box { min-width: 55px; text-align: center; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
-        .date-box b { font-size: 1.2rem; display: block; color: var(--primary); }
+        .date-box b { font-size: 1.1rem; display: block; color: var(--primary); }
+        
+        .map-link { display: inline-block; margin-top: 8px; color: var(--primary); text-decoration: none; font-size: 0.75rem; font-weight: bold; background: #e2e8f0; padding: 4px 10px; border-radius: 6px; }
 
         .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 40px); align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
-        .status-icon { cursor: pointer; font-size: 1.5rem; color: #cbd5e1; text-align: center; }
+        .status-icon { cursor: pointer; font-size: 1.4rem; color: #cbd5e1; text-align: center; transition: 0.2s; }
         .status-icon.active { color: var(--green); }
+        .status-icon.loading { opacity: 0.5; transform: scale(0.8); }
 
         .admin-only { display: none !important; }
         .edit-mode .admin-only { display: block !important; }
@@ -48,12 +49,12 @@
 </head>
 <body class="read-only">
 
-    <div id="toast">Updating...</div>
+    <div id="toast">Connecting...</div>
 
     <div id="pin-modal" class="modal-overlay">
         <div class="modal-content">
-            <h3>Admin Access</h3>
-            <input type="password" id="pin-input" style="width:100%; padding:10px; text-align:center; font-size:1.5rem; border-radius:10px; border:1px solid #ccc;" placeholder="PIN" inputmode="numeric">
+            <h3>Admin Login</h3>
+            <input type="password" id="pin-input" style="width:100%; padding:10px; text-align:center; font-size:1.5rem;" placeholder="PIN" inputmode="numeric">
             <button onclick="login()" style="width:100%; background:var(--primary); color:white; border:none; padding:14px; border-radius:12px; margin-top:15px; font-weight:bold;">Unlock</button>
             <button onclick="closeM('pin-modal')" style="margin-top:10px; border:none; background:none; color:gray;">Cancel</button>
         </div>
@@ -72,18 +73,18 @@
         <div class="hero">
             <h1>THAILAND 2026</h1>
             <div class="sync-container">
-                <span id="last-update">Syncing...</span>
-                <button id="sync-btn" onclick="manualSync()" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+                <span id="last-update">Connecting...</span>
+                <button id="sync-btn" onclick="manualSync()" title="Refresh"><i class="fas fa-sync-alt"></i></button>
             </div>
             <button id="login-btn" onclick="openM('pin-modal')" style="background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:4px 12px; border-radius:20px; font-size:0.65rem; margin-top:10px; cursor:pointer;">Admin Login</button>
             <button class="admin-only" onclick="location.reload()" style="background:var(--accent); border:none; color:white; padding:6px 16px; border-radius:20px; margin: 10px auto;">Logout</button>
         </div>
-        <div class="container" id="list-iti">Loading...</div>
+        <div class="container" id="list-iti">Loading Live Data...</div>
     </div>
 
     <div id="p-checklist" style="display:none;">
         <div class="hero"><h1>PACKING</h1></div>
-        <div class="container card" id="list-check">Loading...</div>
+        <div class="container card" id="list-check">Loading Live Data...</div>
     </div>
 
     <nav class="bottom-nav">
@@ -92,13 +93,10 @@
     </nav>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxvLZ3coHbpzDzleYOfNXdKfeameKnFJBM9em2vpLe48vy_4DtBy9jbfKjffrwVaZs/exec';
-        const CSV_ITI = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_CnsbDUPOjrATctJ5byGVkKLOrjBuv3mwvMVcaLVKI03faBrL7GOHMX3a8n5SzMfLrgrtrZoIB-xG/pub?gid=0&single=true&output=csv';
-        const CSV_CHECK = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS_CnsbDUPOjrATctJ5byGVkKLOrjBuv3mwvMVcaLVKI03faBrL7GOHMX3a8n5SzMfLrgrtrZoIB-xG/pub?gid=1402744317&single=true&output=csv';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBnN_Th4UqAAjEEz6ytVOdMaUEuYY35lq2VQmgd-UCGXF-lVao666fgGoYLj3kOe67/exec';
         
         let isAdmin = false;
         let currentPin = "";
-        let localOverrides = JSON.parse(localStorage.getItem('trip_overrides') || '{}');
 
         function openM(id) { document.getElementById(id).style.display = 'flex'; }
         function closeM(id) { document.getElementById(id).style.display = 'none'; }
@@ -136,27 +134,19 @@
 
         async function render() {
             try {
-                // High-precision cache buster
-                const cb = `&t=${new Date().getTime()}&rand=${Math.random()}`;
-                const resI = await fetch(CSV_ITI + cb);
-                const textI = await resI.text();
-                const rowsI = textI.split('\n').slice(1);
-                let htmlI = "";
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
                 
-                rowsI.forEach((line, i) => {
-                    const c = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/"/g, '').trim());
-                    if(c.length < 4) return;
-                    
+                // ITINERARY
+                let htmlI = "";
+                data.itinerary.forEach((item, i) => {
                     const rowId = i + 2;
-                    // Check if we have a local "fresh" version to override the old Google data
-                    const title = localOverrides[`iti-${rowId}-4`] || c[3];
-                    const desc = localOverrides[`iti-${rowId}-5`] || c[4];
-
                     htmlI += `<div class="card iti-row">
-                        <div class="date-box"><b>${c[0]}</b><small>${c[1]}</small></div>
+                        <div class="date-box"><b>${item.date || ''}</b><small>${item.day || ''}</small></div>
                         <div style="flex:1">
-                            <h4 class="iti-title" style="margin:0">${title}</h4>
-                            <p class="iti-desc" style="font-size:0.85rem; color:#64748b; margin:6px 0;">${desc}</p>
+                            <h4 class="iti-title" style="margin:0">${item.title || ''}</h4>
+                            <p class="iti-desc" style="font-size:0.85rem; color:#64748b; margin:6px 0;">${item.description || ''}</p>
+                            ${item.map ? `<a href="${item.map}" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> Location</a>` : ''}
                             <div class="admin-only">
                                 <button class="edit-btn" onclick="showEditor(${rowId}, 4, 'title', this)">Edit Title</button>
                                 <button class="edit-btn" onclick="showEditor(${rowId}, 5, 'desc', this)">Edit Desc</button>
@@ -166,18 +156,14 @@
                 });
                 document.getElementById('list-iti').innerHTML = htmlI;
 
-                const resC = await fetch(CSV_CHECK + cb);
-                const textC = await resC.text();
-                const rowsC = textC.split('\n').slice(1);
+                // CHECKLIST
                 let htmlC = `<div class="check-grid" style="font-weight:bold; color:#94a3b8; font-size:0.7rem;"><div>ITEM</div><div>D</div><div>M</div><div>S</div><div>S</div></div>`;
-                
-                rowsC.forEach(line => {
-                    const c = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/"/g, '').trim());
-                    if(c.length < 5) return;
-                    htmlC += `<div class="check-grid"><div>${c[0]}</div>`;
-                    ["Dad","Mom","Sarah","Sophie"].forEach((name, idx) => {
-                        const active = c[idx+1].toLowerCase().startsWith('y');
-                        htmlC += `<div onclick="toggleCheck(this, '${c[0].replace(/'/g, "\\'")}', '${name}', ${active})">
+                data.checklist.forEach(item => {
+                    htmlC += `<div class="check-grid"><div>${item.item}</div>`;
+                    ["dad","mom","sarah","sophie"].forEach(name => {
+                        const active = item[name] && item[name].toString().toLowerCase().startsWith('y');
+                        const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+                        htmlC += `<div onclick="toggleCheck(this, '${item.item.replace(/'/g, "\\'")}', '${displayName}', ${active})">
                             <i class="status-icon fas fa-check-circle ${active?'active':''}"></i></div>`;
                     });
                     htmlC += `</div>`;
@@ -185,8 +171,31 @@
                 document.getElementById('list-check').innerHTML = htmlC;
                 
                 const now = new Date();
-                document.getElementById('last-update').innerText = "Last Sync: " + now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0');
-            } catch(e) { console.error(e); }
+                document.getElementById('last-update').innerText = "Live: " + now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0');
+            } catch(e) { 
+                console.error(e);
+                document.getElementById('last-update').innerText = "Offline";
+            }
+        }
+
+        async function toggleCheck(el, item, person, curActive) {
+            if(!isAdmin) return;
+            const icon = el.querySelector('i');
+            
+            // OPTIMISTIC UPDATE: Toggle visually immediately
+            const isNowActive = !icon.classList.contains('active');
+            icon.classList.toggle('active', isNowActive);
+            icon.classList.add('loading'); // Show it's working
+            
+            try {
+                await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Checklist&item=${encodeURIComponent(item)}&person=${person}&status=${isNowActive?'y':'n'}`, {mode:'no-cors'});
+                icon.classList.remove('loading');
+            } catch(e) {
+                // Revert if it fails
+                icon.classList.toggle('active', curActive);
+                icon.classList.remove('loading');
+                showToast("Save Failed!");
+            }
         }
 
         function showEditor(row, col, field, btn) {
@@ -199,33 +208,12 @@
             
             document.getElementById('save-btn').onclick = async () => {
                 const newVal = document.getElementById('edit-text').value;
-                
-                // SAVE TO LOCAL OVERRIDES so it doesn't flip back on refresh
-                localOverrides[`iti-${row}-${col}`] = newVal;
-                localStorage.setItem('trip_overrides', JSON.stringify(localOverrides));
-                
                 currentElement.innerText = newVal;
                 closeM('edit-modal');
-                showToast("Pushing to Google...");
-                
+                showToast("Saving...");
                 await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Itinerary&row=${row}&col=${col}&value=${encodeURIComponent(newVal)}`, {mode:'no-cors'});
-                showToast("Saved to Cloud");
-                
-                // Keep local override for 2 mins to give Google time to sync globally
-                setTimeout(() => {
-                    delete localOverrides[`iti-${row}-${col}`];
-                    localStorage.setItem('trip_overrides', JSON.stringify(localOverrides));
-                }, 120000);
+                showToast("Saved!");
             };
-        }
-
-        async function toggleCheck(el, item, person, curActive) {
-            if(!isAdmin) return;
-            const icon = el.querySelector('i');
-            const nowActive = !icon.classList.contains('active');
-            icon.classList.toggle('active');
-            await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Checklist&item=${encodeURIComponent(item)}&person=${person}&status=${nowActive?'y':'n'}`, {mode:'no-cors'});
-            showToast("Syncing...");
         }
 
         render();
