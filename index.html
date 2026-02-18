@@ -11,26 +11,36 @@
         
         /* MODALS */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2, 48, 71, 0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; }
+        .modal-content { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         .modal-content textarea { width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-size: 1rem; height: 120px; font-family: inherit; }
 
-        /* UI */
+        /* HERO & SYNC */
         .hero { background: var(--primary); color: white; padding: 30px 20px; text-align: center; border-bottom: 4px solid var(--accent); }
+        .hero h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; }
+        
+        #sync-btn { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1.1rem; cursor: pointer; margin-left: 10px; transition: 0.3s; }
+        #sync-btn:hover { color: var(--accent); }
+        .spin-anim { animation: spin 0.8s linear; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* LAYOUT */
         .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
         .card { background: var(--white); border-radius: 16px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        
         .iti-row { display: flex; gap: 15px; align-items: flex-start; }
         .date-box { min-width: 55px; text-align: center; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
         .date-box b { font-size: 1.2rem; display: block; color: var(--primary); }
-        
+
+        /* CHECKLIST */
         .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 40px); align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
         .status-icon { cursor: pointer; font-size: 1.5rem; color: #cbd5e1; text-align: center; }
         .status-icon.active { color: var(--green); }
 
+        /* ADMIN VISIBILITY */
         .admin-only { display: none !important; }
         .edit-mode .admin-only { display: block !important; }
         .edit-btn { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; margin-top: 8px; cursor: pointer; font-weight: bold; }
         
+        /* NAV */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 15px 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
         .nav-btn { flex: 1; border: none; background: none; color: #94a3b8; cursor: pointer; text-align: center; }
         .nav-btn.active { color: var(--accent); font-weight: bold; }
@@ -49,6 +59,7 @@
             <h3>Admin Access</h3>
             <input type="password" id="pin-input" style="width:100%; padding:10px; text-align:center; font-size:1.5rem; border-radius:10px; border:1px solid #ccc;" placeholder="PIN" inputmode="numeric">
             <button onclick="login()" style="width:100%; background:var(--primary); color:white; border:none; padding:14px; border-radius:12px; margin-top:15px; font-weight:bold;">Unlock</button>
+            <button onclick="closeM('pin-modal')" style="margin-top:10px; border:none; background:none; color:gray;">Cancel</button>
         </div>
     </div>
 
@@ -63,9 +74,9 @@
 
     <div id="p-itinerary">
         <div class="hero">
-            <h1>PLAN</h1>
+            <h1>PLAN <button id="sync-btn" class="admin-only" onclick="manualSync()" title="Force Refresh"><i class="fas fa-sync-alt"></i></button></h1>
             <button id="login-btn" onclick="openM('pin-modal')" style="background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:6px 16px; border-radius:20px; font-size:0.75rem; margin-top:10px;">Login</button>
-            <button class="admin-only" onclick="location.reload()" style="background:var(--accent); border:none; color:white; padding:6px 16px; border-radius:20px;">Logout</button>
+            <button class="admin-only" onclick="location.reload()" style="background:var(--accent); border:none; color:white; padding:6px 16px; border-radius:20px; margin: 10px auto;">Logout</button>
         </div>
         <div class="container" id="list-iti">Loading...</div>
     </div>
@@ -114,11 +125,20 @@
             } else { alert("Wrong PIN"); }
         }
 
+        async function manualSync() {
+            const icon = document.querySelector('#sync-btn i');
+            icon.classList.add('spin-anim');
+            showToast("Force Syncing Sheets...");
+            await render();
+            setTimeout(() => {
+                icon.classList.remove('spin-anim');
+                showToast("Sync Complete!");
+            }, 800);
+        }
+
         async function render() {
             try {
-                // The Cache Buster: Adds a unique timestamp to every request
                 const cb = `&t=${new Date().getTime()}`;
-                
                 const resI = await fetch(CSV_ITI + cb);
                 const textI = await resI.text();
                 const rowsI = textI.split('\n').slice(1);
@@ -127,10 +147,10 @@
                 rowsI.forEach((line, i) => {
                     const c = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/"/g, '').trim());
                     if(c.length < 4) return;
-                    htmlI += `<div class="card iti-row" id="row-${i+2}">
+                    htmlI += `<div class="card iti-row">
                         <div class="date-box"><b>${c[0]}</b><small>${c[1]}</small></div>
                         <div style="flex:1">
-                            <h4 class="iti-title">${c[3]}</h4>
+                            <h4 class="iti-title" style="margin:0">${c[3]}</h4>
                             <p class="iti-desc" style="font-size:0.85rem; color:#64748b; margin:6px 0;">${c[4]}</p>
                             <div class="admin-only">
                                 <button class="edit-btn" onclick="showEditor(${i+2}, 4, 'title', this)">Edit Title</button>
@@ -162,7 +182,6 @@
         }
 
         function showEditor(row, col, field, btn) {
-            // Get current text from the screen
             const currentElement = field === 'title' ? 
                 btn.parentElement.parentElement.querySelector('.iti-title') : 
                 btn.parentElement.parentElement.querySelector('.iti-desc');
@@ -172,15 +191,10 @@
             
             document.getElementById('save-btn').onclick = async () => {
                 const newVal = document.getElementById('edit-text').value;
-                
-                // OPTIMISTIC UPDATE: Change it on screen instantly
-                currentElement.innerText = newVal;
-                
+                currentElement.innerText = newVal; // Optimistic update
                 closeM('edit-modal');
-                showToast("Syncing with Google...");
-                
+                showToast("Sending to Google...");
                 await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Itinerary&row=${row}&col=${col}&value=${encodeURIComponent(newVal)}`, {mode:'no-cors'});
-                
                 showToast("Saved!");
             };
         }
@@ -191,7 +205,7 @@
             const nowActive = !icon.classList.contains('active');
             icon.classList.toggle('active');
             await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Checklist&item=${encodeURIComponent(item)}&person=${person}&status=${nowActive?'y':'n'}`, {mode:'no-cors'});
-            showToast("Syncing...");
+            showToast("Saved");
         }
 
         render();
