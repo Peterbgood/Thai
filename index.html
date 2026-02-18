@@ -3,59 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thailand 2026 | Live Trip Admin</title>
+    <title>Thailand 2026 | Trip Tracker</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --primary: #023047; --accent: #fb8500; --bg: #f1f5f9; --white: #ffffff; --green: #10b981; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding-bottom: 100px; color: #1e293b; }
         
+        /* CENTERED WEATHER BAR */
+        .weather-bar { background: #001219; color: white; display: flex; justify-content: center; align-items: center; padding: 15px 0; gap: 20px; border-bottom: 2px solid var(--accent); }
+        .w-item { text-align: center; min-width: 90px; }
+        .w-city { font-size: 0.6rem; text-transform: uppercase; color: #94a3b8; font-weight: bold; letter-spacing: 1px; margin-bottom: 3px; }
+        .w-time { font-size: 1.1rem; font-weight: bold; font-family: 'Courier New', monospace; }
+        .w-temp { font-size: 0.7rem; color: var(--accent); margin-top: 2px; }
+
+        /* MODALS & HERO */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2, 48, 71, 0.95); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-content { background: white; padding: 25px; border-radius: 20px; text-align: center; width: 85%; max-width: 320px; }
         .modal-content textarea { width: 100%; padding: 12px; margin: 15px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-size: 1rem; height: 120px; font-family: inherit; }
-
-        .hero { background: var(--primary); color: white; padding: 30px 20px; text-align: center; border-bottom: 4px solid var(--accent); }
-        .hero h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; }
-        .sync-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
-        #sync-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        #last-update { font-size: 0.65rem; color: rgba(255,255,255,0.6); font-family: monospace; }
+        
+        .hero { background: var(--primary); color: white; padding: 25px 20px; text-align: center; }
+        .hero h1 { margin: 0; font-size: 1.6rem; letter-spacing: 2px; }
+        
+        /* SYNC & UI */
+        .sync-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; }
+        #sync-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        #sync-btn:hover { background: var(--accent); }
+        #last-update { font-size: 0.65rem; color: rgba(255,255,255,0.5); font-family: monospace; }
         .spin-anim { animation: spin 0.8s linear; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
+        .container { max-width: 600px; margin: 15px auto; padding: 0 12px; }
         .card { background: var(--white); border-radius: 16px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .iti-row { display: flex; gap: 15px; align-items: flex-start; }
         .date-box { min-width: 55px; text-align: center; background: #f8fafc; padding: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
         .date-box b { font-size: 1.1rem; display: block; color: var(--primary); }
         
-        .map-link { display: inline-block; margin-top: 8px; color: var(--primary); text-decoration: none; font-size: 0.75rem; font-weight: bold; background: #e2e8f0; padding: 4px 10px; border-radius: 6px; }
+        .map-link { display: inline-block; margin-top: 8px; color: var(--primary); text-decoration: none; font-size: 0.75rem; font-weight: bold; background: #e2e8f0; padding: 5px 12px; border-radius: 8px; }
 
-        .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 40px); align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
-        .status-icon { cursor: pointer; font-size: 1.4rem; color: #cbd5e1; text-align: center; transition: 0.2s; }
+        .check-grid { display: grid; grid-template-columns: 1fr repeat(4, 42px); align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+        .status-icon { cursor: pointer; font-size: 1.5rem; color: #cbd5e1; text-align: center; }
         .status-icon.active { color: var(--green); }
-        .status-icon.loading { opacity: 0.5; transform: scale(0.8); }
+        .status-icon.loading { opacity: 0.4; }
 
         .admin-only { display: none !important; }
         .edit-mode .admin-only { display: block !important; }
-        .edit-btn { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; margin-top: 8px; cursor: pointer; font-weight: bold; }
+        .edit-btn { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; margin-top: 8px; cursor: pointer; }
         
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 15px 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); }
         .nav-btn { flex: 1; border: none; background: none; color: #94a3b8; cursor: pointer; text-align: center; }
         .nav-btn.active { color: var(--accent); font-weight: bold; }
-
+        
         #toast { visibility: hidden; background: #334155; color: white; padding: 12px 25px; position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); border-radius: 50px; z-index: 3000; font-size: 0.85rem; }
-        #toast.show { visibility: visible; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #toast.show { visibility: visible; }
     </style>
 </head>
 <body class="read-only">
+
+    <div class="weather-bar">
+        <div class="w-item">
+            <div class="w-city">Knoxville</div>
+            <div id="time-knox" class="w-time">--:--</div>
+            <div class="w-temp"><i class="fas fa-cloud"></i> 63°F</div>
+        </div>
+        <div class="w-item">
+            <div class="w-city">Doha</div>
+            <div id="time-doha" class="w-time">--:--</div>
+            <div class="w-temp"><i class="fas fa-moon"></i> 68°F</div>
+        </div>
+        <div class="w-item">
+            <div class="w-city">Phuket</div>
+            <div id="time-phu" class="w-time">--:--</div>
+            <div class="w-temp"><i class="fas fa-sun"></i> 82°F</div>
+        </div>
+    </div>
 
     <div id="toast">Connecting...</div>
 
     <div id="pin-modal" class="modal-overlay">
         <div class="modal-content">
-            <h3>Admin Login</h3>
-            <input type="password" id="pin-input" style="width:100%; padding:10px; text-align:center; font-size:1.5rem;" placeholder="PIN" inputmode="numeric">
-            <button onclick="login()" style="width:100%; background:var(--primary); color:white; border:none; padding:14px; border-radius:12px; margin-top:15px; font-weight:bold;">Unlock</button>
+            <h3>Admin Access</h3>
+            <input type="password" id="pin-input" style="width:100%; padding:12px; text-align:center; font-size:1.5rem; border-radius:10px; border:1px solid #ddd;" placeholder="PIN" inputmode="numeric">
+            <button onclick="login()" style="width:100%; background:var(--primary); color:white; border:none; padding:15px; border-radius:12px; margin-top:15px; font-weight:bold;">Unlock</button>
             <button onclick="closeM('pin-modal')" style="margin-top:10px; border:none; background:none; color:gray;">Cancel</button>
         </div>
     </div>
@@ -64,7 +92,7 @@
         <div class="modal-content">
             <h3 id="edit-title">Update Entry</h3>
             <textarea id="edit-text"></textarea>
-            <button id="save-btn" style="width:100%; background:var(--accent); color:white; border:none; padding:14px; border-radius:12px; font-weight:bold;">Save Changes</button>
+            <button id="save-btn" style="width:100%; background:var(--accent); color:white; border:none; padding:15px; border-radius:12px; font-weight:bold;">Save Changes</button>
             <button onclick="closeM('edit-modal')" style="margin-top:10px; border:none; background:none; color:gray;">Cancel</button>
         </div>
     </div>
@@ -73,18 +101,18 @@
         <div class="hero">
             <h1>THAILAND 2026</h1>
             <div class="sync-container">
-                <span id="last-update">Connecting...</span>
-                <button id="sync-btn" onclick="manualSync()" title="Refresh"><i class="fas fa-sync-alt"></i></button>
+                <span id="last-update">Live API Feed</span>
+                <button id="sync-btn" onclick="manualSync()"><i class="fas fa-sync-alt"></i></button>
             </div>
-            <button id="login-btn" onclick="openM('pin-modal')" style="background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:4px 12px; border-radius:20px; font-size:0.65rem; margin-top:10px; cursor:pointer;">Admin Login</button>
-            <button class="admin-only" onclick="location.reload()" style="background:var(--accent); border:none; color:white; padding:6px 16px; border-radius:20px; margin: 10px auto;">Logout</button>
+            <button id="login-btn" onclick="openM('pin-modal')" style="background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:5px 15px; border-radius:20px; font-size:0.65rem; margin-top:12px; cursor:pointer;">Admin Login</button>
+            <button class="admin-only" onclick="location.reload()" style="background:var(--accent); border:none; color:white; padding:6px 20px; border-radius:20px; margin-top:12px;">Logout</button>
         </div>
-        <div class="container" id="list-iti">Loading Live Data...</div>
+        <div class="container" id="list-iti">Fetching your trip...</div>
     </div>
 
     <div id="p-checklist" style="display:none;">
         <div class="hero"><h1>PACKING</h1></div>
-        <div class="container card" id="list-check">Loading Live Data...</div>
+        <div class="container card" id="list-check">Loading...</div>
     </div>
 
     <nav class="bottom-nav">
@@ -94,9 +122,21 @@
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBnN_Th4UqAAjEEz6ytVOdMaUEuYY35lq2VQmgd-UCGXF-lVao666fgGoYLj3kOe67/exec';
-        
         let isAdmin = false;
         let currentPin = "";
+
+        function updateClocks() {
+            const now = new Date();
+            const format = (offset, id) => {
+                const time = new Date(now.getTime() + (offset * 3600000));
+                document.getElementById(id).innerText = time.getUTCHours().toString().padStart(2,'0') + ":" + time.getUTCMinutes().toString().padStart(2,'0');
+            };
+            format(-5, 'time-knox'); // Knoxville EST
+            format(3, 'time-doha');  // Doha AST
+            format(7, 'time-phu');   // Phuket ICT
+        }
+        setInterval(updateClocks, 1000);
+        updateClocks();
 
         function openM(id) { document.getElementById(id).style.display = 'flex'; }
         function closeM(id) { document.getElementById(id).style.display = 'none'; }
@@ -121,13 +161,13 @@
                 document.getElementById('login-btn').style.display = 'none';
                 closeM('pin-modal');
                 render();
-            } else { alert("Wrong PIN"); }
+            } else { alert("Incorrect PIN"); }
         }
 
         async function manualSync() {
             const icon = document.querySelector('#sync-btn i');
             icon.classList.add('spin-anim');
-            showToast("Bypassing cache...");
+            showToast("Syncing Live Sheets...");
             await render();
             setTimeout(() => icon.classList.remove('spin-anim'), 800);
         }
@@ -137,7 +177,6 @@
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json();
                 
-                // ITINERARY
                 let htmlI = "";
                 data.itinerary.forEach((item, i) => {
                     const rowId = i + 2;
@@ -156,7 +195,6 @@
                 });
                 document.getElementById('list-iti').innerHTML = htmlI;
 
-                // CHECKLIST
                 let htmlC = `<div class="check-grid" style="font-weight:bold; color:#94a3b8; font-size:0.7rem;"><div>ITEM</div><div>D</div><div>M</div><div>S</div><div>S</div></div>`;
                 data.checklist.forEach(item => {
                     htmlC += `<div class="check-grid"><div>${item.item}</div>`;
@@ -171,30 +209,23 @@
                 document.getElementById('list-check').innerHTML = htmlC;
                 
                 const now = new Date();
-                document.getElementById('last-update').innerText = "Live: " + now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0');
-            } catch(e) { 
-                console.error(e);
-                document.getElementById('last-update').innerText = "Offline";
-            }
+                document.getElementById('last-update').innerText = "Sync: " + now.getHours() + ":" + now.getMinutes().toString().padStart(2, '0');
+            } catch(e) { document.getElementById('last-update').innerText = "Sync Offline"; }
         }
 
         async function toggleCheck(el, item, person, curActive) {
             if(!isAdmin) return;
             const icon = el.querySelector('i');
-            
-            // OPTIMISTIC UPDATE: Toggle visually immediately
             const isNowActive = !icon.classList.contains('active');
             icon.classList.toggle('active', isNowActive);
-            icon.classList.add('loading'); // Show it's working
-            
+            icon.classList.add('loading');
             try {
                 await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Checklist&item=${encodeURIComponent(item)}&person=${person}&status=${isNowActive?'y':'n'}`, {mode:'no-cors'});
                 icon.classList.remove('loading');
             } catch(e) {
-                // Revert if it fails
                 icon.classList.toggle('active', curActive);
                 icon.classList.remove('loading');
-                showToast("Save Failed!");
+                showToast("Network Error");
             }
         }
 
@@ -202,15 +233,13 @@
             const currentElement = field === 'title' ? 
                 btn.parentElement.parentElement.querySelector('.iti-title') : 
                 btn.parentElement.parentElement.querySelector('.iti-desc');
-            
             document.getElementById('edit-text').value = currentElement.innerText;
             openM('edit-modal');
-            
             document.getElementById('save-btn').onclick = async () => {
                 const newVal = document.getElementById('edit-text').value;
                 currentElement.innerText = newVal;
                 closeM('edit-modal');
-                showToast("Saving...");
+                showToast("Updating...");
                 await fetch(`${SCRIPT_URL}?pin=${currentPin}&type=Itinerary&row=${row}&col=${col}&value=${encodeURIComponent(newVal)}`, {mode:'no-cors'});
                 showToast("Saved!");
             };
